@@ -61,19 +61,19 @@ public class FoodSummaryStage extends Stage {
 
   private void setLabels() {
     Button ok = new Button("ok");
-    Text fl = new Text("Fiber: ");
-    Text pl = new Text("Protein: ");
-    Text fal = new Text("Fat: ");
-    Text cl = new Text("Calories: ");
-    Text chl = new Text("Carbonhydrate: ");
-    Text co = new Text("Total Item Count: ");
-    fl.setFont(Font.font(null, FontWeight.BOLD, 25));
-    pl.setFont(Font.font(null, FontWeight.BOLD, 25));
-    fal.setFont(Font.font(null, FontWeight.BOLD, 25));
-    cl.setFont(Font.font(null, FontWeight.BOLD, 25));
-    chl.setFont(Font.font(null, FontWeight.BOLD, 25));
-    co.setFont(Font.font(null, FontWeight.BOLD, 25));
-    names.getChildren().addAll(fl, pl, fal, cl, chl, co, ok);
+    Text fiber = new Text("Fiber: ");
+    Text protein = new Text("Protein: ");
+    Text fat = new Text("Fat: ");
+    Text calory = new Text("Calories: ");
+    Text carbon = new Text("Carbonhydrate: ");
+    Text count = new Text("Total Item Count: ");
+    fiber.setFont(Font.font(null, FontWeight.BOLD, 25));
+    protein.setFont(Font.font(null, FontWeight.BOLD, 25));
+    fat.setFont(Font.font(null, FontWeight.BOLD, 25));
+    calory.setFont(Font.font(null, FontWeight.BOLD, 25));
+    carbon.setFont(Font.font(null, FontWeight.BOLD, 25));
+    count.setFont(Font.font(null, FontWeight.BOLD, 25));
+    names.getChildren().addAll(fiber, protein, fat, calory, carbon, count, ok);
     VBox.setMargin(ok, new Insets(0, 0, 0, 130));
     handleOkButton(ok);
 
@@ -87,26 +87,26 @@ public class FoodSummaryStage extends Stage {
   }
 
   private void setTexts() {
-    String fs = "" + fiber;
-    String ps = "" + protein;
-    String fas = "" + fat;
-    String cs = "" + calories;
-    String chs = "" + carbohydrate;
-    String cos = "" + count;
+    String fiberStr = "" + fiber;
+    String proteinStr = "" + protein;
+    String fatStr = "" + fat;
+    String caloriesStr = "" + calories;
+    String carbohydrateStr = "" + carbohydrate;
+    String countStr = "" + count;
 
-    Text f = new Text(fs);
-    Text p = new Text(ps);
-    Text fa = new Text(fas);
-    Text c = new Text(cs);
-    Text ch = new Text(chs);
-    Text co = new Text(cos);
-    f.setFont(Font.font(null, FontWeight.BOLD, 25));
-    p.setFont(Font.font(null, FontWeight.BOLD, 25));
-    fa.setFont(Font.font(null, FontWeight.BOLD, 25));
-    c.setFont(Font.font(null, FontWeight.BOLD, 25));
-    ch.setFont(Font.font(null, FontWeight.BOLD, 25));
-    co.setFont(Font.font(null, FontWeight.BOLD, 25));
-    values.getChildren().addAll(f, p, fa, c, ch, co);
+    Text fiberTx = new Text(fiberStr);
+    Text proteinTx = new Text(proteinStr);
+    Text fatTx = new Text(fatStr);
+    Text caloriesTx = new Text(caloriesStr);
+    Text carbohydrateTx = new Text(carbohydrateStr);
+    Text countTx = new Text(countStr);
+    fiberTx.setFont(Font.font(null, FontWeight.BOLD, 25));
+    proteinTx.setFont(Font.font(null, FontWeight.BOLD, 25));
+    fatTx.setFont(Font.font(null, FontWeight.BOLD, 25));
+    caloriesTx.setFont(Font.font(null, FontWeight.BOLD, 25));
+    carbohydrateTx.setFont(Font.font(null, FontWeight.BOLD, 25));
+    countTx.setFont(Font.font(null, FontWeight.BOLD, 25));
+    values.getChildren().addAll(fiberTx, proteinTx, fatTx, caloriesTx, carbohydrateTx, countTx);
     data.getChildren().addAll(names, values);
   }
 

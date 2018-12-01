@@ -38,11 +38,11 @@ public class FoodList extends VBox {
   private List<FoodItem> currentFoodItemList;
   private List<FoodItem> selectList;
   private MealList mealList;
-  
+
 
   public FoodList() {
     this("foodItems.csv");
-    
+
   }
 
   public FoodList(String filePath) {
@@ -119,8 +119,7 @@ public class FoodList extends VBox {
 
   private void handleUndoEvent(MenuItem undo) {
     undo.setOnAction(event -> {
-      Alert alert =
-          new Alert(AlertType.CONFIRMATION, "Confirm to undo all item selection");
+      Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm to undo all item selection");
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {
@@ -132,7 +131,7 @@ public class FoodList extends VBox {
             for (FoodItem fooditem : currentFoodItemList) {
               FoodItemView current = new FoodItemView(fooditem);
               Button select = new Button("select");
-              handleSelectRemoveButtonEvent(current, select, fooditem);
+              handleSelectButtonEvent(current, select, fooditem);
               currentFoodListView.getItems().add(current);
             }
             currentFoodListView.refresh();
@@ -143,80 +142,32 @@ public class FoodList extends VBox {
     });
   }
 
+  
+  
   private void handleApplyButtonEvent(MenuItem apply) {
     apply.setOnAction(event -> {
-      for (FoodItem foodItem : selectList) {
-        FoodItemView current = new FoodItemView(foodItem);
-        if (!mealList.getCurrentMealList().contains(foodItem)) {
-          mealList.getCurrentMealList().add(foodItem);
-          mealList.getcurrentMealListView().getItems().add(current);
-          handleMealRemoveEvent(current, foodItem);
-        }
-      }
+      mealList.addFoodItems(selectList);
     });
 
 
   }
 
-  private void handleMealRemoveEvent(FoodItemView current, FoodItem foodItem) {
-    current.getRemove().setOnMouseClicked(new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        String message = "Confirm to remove item: " + foodItem.getName();
-        Alert alert = new Alert(AlertType.CONFIRMATION, message);
-        alert.showAndWait().filter(new Predicate<ButtonType>() {
-          @Override
-          public boolean test(ButtonType t) {
-            if (t.getButtonData().isCancelButton())
-              return true;
-            else {
-              mealList.getCurrentMealList().remove(foodItem);
-              mealList.getcurrentMealListView().getItems().remove(current);
-              mealList.getcurrentMealListView().refresh();
-              return false;
-            }
-          }
-        });
-      }
-    });
-  }
 
   public void updateList(String filePath) {
+    this.foodData = new FoodData();
     foodData.loadFoodItems(filePath);
     currentFoodItemList = foodData.getAllFoodItems();
     for (FoodItem fooditem : currentFoodItemList) {
       FoodItemView current = new FoodItemView(fooditem);
       Button select = new Button("select");
-      handleSelectRemoveButtonEvent(current, select, fooditem);
+      handleSelectButtonEvent(current, select, fooditem);
       currentFoodListView.getItems().add(current);
     }
   }
 
-  private void handleSelectRemoveButtonEvent(FoodItemView current, Button select,
+  private void handleSelectButtonEvent(FoodItemView current, Button select,
       FoodItem fooditem) {
     current.getChildren().add(select);
-    current.getRemove().setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-      @Override
-      public void handle(MouseEvent event) {
-        String message = "Confirm to remove item: " + fooditem.getName();
-        Alert alert = new Alert(AlertType.CONFIRMATION, message);
-        alert.showAndWait().filter(new Predicate<ButtonType>() {
-          @Override
-          public boolean test(ButtonType t) {
-            if (t.getButtonData().isCancelButton())
-              return true;
-            else {
-              currentFoodItemList.remove(fooditem);
-              selectList.remove(fooditem);
-              currentFoodListView.getItems().remove(current);
-              currentFoodListView.refresh();
-              return false;
-            }
-          }
-        });
-      }
-    });
     select.setOnMouseClicked(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {

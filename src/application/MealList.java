@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -19,6 +20,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -144,8 +146,45 @@ public class MealList extends VBox {
 
   private void displaySummary(double fiber, double protein, double fat, double calories,
       double carbohydrate, int count) {
-    Stage foodSummaryStage = new FoodSummaryStage(fiber, protein, fat, calories, carbohydrate,count);
+    Stage foodSummaryStage =
+        new FoodSummaryStage(fiber, protein, fat, calories, carbohydrate, count);
     foodSummaryStage.show();
+  }
+
+  public void addFoodItems(List<FoodItem> selectList) {
+    for (FoodItem foodItem : selectList) {
+      FoodItemView current = new FoodItemView(foodItem);
+      if (!currentMealList.contains(foodItem)) {
+        currentMealList.add(foodItem);
+        currentMealListView.getItems().add(current);
+        handleMealRemoveEvent(current, foodItem);
+      }
+    }
+  }
+
+  private void handleMealRemoveEvent(FoodItemView current, FoodItem foodItem) {
+    Button remove = new Button("remove");
+    current.getChildren().add(remove);
+    remove.setOnMouseClicked(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        String message = "Confirm to remove item: " + foodItem.getName();
+        Alert alert = new Alert(AlertType.CONFIRMATION, message);
+        alert.showAndWait().filter(new Predicate<ButtonType>() {
+          @Override
+          public boolean test(ButtonType t) {
+            if (t.getButtonData().isCancelButton())
+              return true;
+            else {
+              currentMealList.remove(foodItem);
+              currentMealListView.getItems().remove(current);
+              currentMealListView.refresh();
+              return false;
+            }
+          }
+        });
+      }
+    });
   }
 
 
