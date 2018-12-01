@@ -62,9 +62,9 @@ Nov 30 -- Zhikang Meng
 ------------------------------------------
 
 Nov 30 -- TO DO LIST
-3.Load and Save Function Implementation Needed
-4.Load and Save Stages Implementation Needed
-5.Awaiting BplusTree Implementation - James Higgins, Yulu Zou, Kejia Fan
+1.Load and Save Function Implementation Needed
+2.Load and Save Stages Implementation Needed
+3.Awaiting BplusTree Implementation - James Higgins, Yulu Zou, Kejia Fan
 
 ------------------------------------------
 TO BE UPDATED
