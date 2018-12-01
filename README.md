@@ -1,5 +1,7 @@
 # p5
 Development Log:
+@Jason Zhou All Rights Reserved
+Collaborators Are Not Allowed To Copy From This Document.
 ------------------------------------------
 
 Nov 27 - Zhikang Meng
@@ -47,12 +49,22 @@ Nov 30 -- Jason Z.
 
 ------------------------------------------
 
-Nov 30 -- TO DO LIST
-1.Commenting needed - using the Nov 27 version
-2.Milestone #2 Fri 10pm
-3.Load and Save Function Implementation Needed
-4.Load and Save Stages Implementation Needed
+Nov 30 -- Zhikang Meng
+1.删除了FoodList里的Remove功能
+2.优化了代码结构, Meal Item 的Remove处理移动到了 MealList中.
+3.修复了FoodList.update里的一点微小错误.
+
+1.Milestone #2 commented and submitted.
+2.Remove Function in FoodList deleted
+3.Structure optimized, Remove function in MealIteam has been removed to MealList
+4.Bugs in Foodlist.update fixed
 
 ------------------------------------------
 
-To be updated
+Nov 30 -- TO DO LIST
+3.Load and Save Function Implementation Needed
+4.Load and Save Stages Implementation Needed
+5.Awaiting BplusTree Implementation - James Higgins, Yulu Zou, Kejia Fan
+
+------------------------------------------
+TO BE UPDATED
