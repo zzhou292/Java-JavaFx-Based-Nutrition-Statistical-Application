@@ -39,11 +39,20 @@ import javafx.stage.Stage;
  */
 public class MealList extends VBox {
 
+  /**
+   * @return the count
+   */
+  public Label getCount() {
+    return count;
+  }
+
   private ListView<HBox> currentMealListView;
   private FoodData foodData;
   private MenuBar menuBar;
   private Label label;
   private List<FoodItem> currentMealList;
+  private Label count;
+  private HBox countBox;
 
 
   /**
@@ -59,9 +68,16 @@ public class MealList extends VBox {
     this.foodData = new FoodData();
     this.menuBar = new MenuBar();
     this.label = new Label("Meal List");
-
+    this.count = new Label(String.valueOf(currentMealList.size()));
+    countBox = new HBox(5);
+    createCountLabels();
     createMenubar();
     boxAdjustment();
+  }
+
+  private void createCountLabels() {
+    Label countlb = new Label("Total meal Items count: ");
+    countBox.getChildren().addAll(countlb, count);
   }
 
   /**
@@ -73,7 +89,7 @@ public class MealList extends VBox {
 
   private void boxAdjustment() {
 
-    this.getChildren().addAll(this.label, this.menuBar, this.currentMealListView);
+    this.getChildren().addAll(this.label, this.menuBar, countBox, this.currentMealListView);
     VBox.setMargin(label, new Insets(0, 0, 0, 130));
     this.setPrefWidth(370.0);
     this.setStyle("-fx-background-color:#BFEFFF");
@@ -81,15 +97,11 @@ public class MealList extends VBox {
   }
 
   private void createMenubar() {
-    MenuItem load = new MenuItem("Load");
-    MenuItem save = new MenuItem("Save");
-    Menu file = new Menu("File", null, load, save);
     MenuItem clear = new MenuItem("Clear");
     MenuItem analyze = new MenuItem("Analyze");
     handleOperations(clear, analyze);
-
     Menu operation = new Menu("Operation", null, clear, analyze);
-    menuBar.getMenus().addAll(file, operation);
+    menuBar.getMenus().add(operation);
 
   }
 
@@ -101,6 +113,7 @@ public class MealList extends VBox {
       double caloriestotal = 0.0;
       double carbohydratetotal = 0.0;
       int count = currentMealList.size();
+      // print meal info, use to debug
       for (int i = 0; i < currentMealList.size(); i++) {
         FoodItem fi = currentMealList.get(i);
         proteintotal = proteintotal + fi.getNutrientValue("protein");
@@ -136,6 +149,7 @@ public class MealList extends VBox {
             currentMealList = new ArrayList<FoodItem>();
             currentMealListView.getItems().clear();
             currentMealListView.refresh();
+            count.setText(String.valueOf(currentMealList.size()));
             return false;
           }
         }
@@ -147,18 +161,16 @@ public class MealList extends VBox {
   private void displaySummary(double fiber, double protein, double fat, double calories,
       double carbohydrate, int count) {
     Stage foodSummaryStage =
-        new FoodSummaryStage(fiber, protein, fat, calories, carbohydrate, count);
+        new MealSummaryStage(fiber, protein, fat, calories, carbohydrate, count);
     foodSummaryStage.show();
   }
 
   public void addFoodItems(List<FoodItem> selectList) {
     for (FoodItem foodItem : selectList) {
       FoodItemView current = new FoodItemView(foodItem);
-      if (!currentMealList.contains(foodItem)) {
-        currentMealList.add(foodItem);
-        currentMealListView.getItems().add(current);
-        handleMealRemoveEvent(current, foodItem);
-      }
+      currentMealList.add(foodItem);
+      currentMealListView.getItems().add(current);
+      handleMealRemoveEvent(current, foodItem);
     }
   }
 
@@ -178,6 +190,7 @@ public class MealList extends VBox {
             else {
               currentMealList.remove(foodItem);
               currentMealListView.getItems().remove(current);
+              count.setText(String.valueOf(currentMealList.size()));
               currentMealListView.refresh();
               return false;
             }

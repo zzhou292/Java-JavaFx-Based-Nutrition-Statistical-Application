@@ -106,7 +106,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     // for each item in this.fooditemlist
     // exams if its name contains this substring add it to the list
     for (FoodItem foodItem : foodItemList) {
-      if (foodItem.getName().contains(substring))
+      if (foodItem.getName().toLowerCase().contains(substring.toLowerCase()))
         result.add(foodItem);
     }
     return result;
@@ -185,6 +185,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     }
   }
 
+  // use to debug
   public void print() {
     Collections.sort(this.foodItemList, new Comparator<FoodItem>() {
 

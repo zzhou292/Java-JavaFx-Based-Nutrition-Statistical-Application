@@ -5,9 +5,7 @@ package application;
 
 
 import java.util.List;
-
 import com.sun.prism.paint.Color;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,25 +35,23 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     AnchorPane ap = new AnchorPane();
-    FoodList flp = new FoodList();
-    FoodQuery fq = new FoodQuery();
-    
-    ap.getChildren().add(flp);
-    ap.getChildren().add(flp.getMealList());
-    ap.getChildren().add(fq);
-   
-    
+    FoodList flp = new FoodList(primaryStage);
+
+
+    ap.getChildren().addAll(flp, flp.getMealList(), flp.getFoodquery());
+
+
+
     AnchorPane.setLeftAnchor(flp.getMealList(), 370.0);
-    AnchorPane.setLeftAnchor(fq, 750.0);
-    Scene sc = new Scene(ap,1110,450);
+    AnchorPane.setLeftAnchor(flp.getFoodquery(), 750.0);
+    Scene sc = new Scene(ap, 1110, 450);
     primaryStage.setTitle("HomePage");
     primaryStage.setScene(sc);
     primaryStage.sizeToScene();
     primaryStage.show();
     primaryStage.setResizable(false);
-    
-    
-    
+
+
 
   }
 
