@@ -61,10 +61,44 @@ Nov 30 -- Zhikang Meng
 
 ------------------------------------------
 
-Nov 30 -- TO DO LIST
-1.Load and Save Function Implementation Needed
-2.Load and Save Stages Implementation Needed
-3.Awaiting BplusTree Implementation - James Higgins, Yulu Zou, Kejia Fan
+Dec 1 -- Zhikang Meng
+1. 修改了Main.java and FoodList.java:
+2. 现在HomePage的FoodList开始时为空, 需要手动Load.
+3. 初步实现了SAVE和Load功能.
+
+1. Main.java and FoodList.java bugs fixed
+2. Manual Load function implemented
+3. Save and Load Functions implemented
 
 ------------------------------------------
+
+Dec 2 -- Zhikang Meng, Jason Zhou
+修改了复数文件,请重新覆盖所有文件.
+1. 分离出了add nutrient rule stage And set name rule stage
+2. 窗口现在添加了专门对Name Rule的显示和移除
+3. Set Name Rule菜单按钮以及窗口的功能已经完全实现
+4. add nutrient rule stage 只是单纯分离  并未添加任何功能.
+5. 菜单栏中增加了复数ApplyRule的选项, 但是都没有实现.
+对 add nutrient rule stage的建议:
+最好不要单纯让用户完全输入. 建议添加ChoiceBox 让用户从6种营养中选择一个 以及从 大于小于等于中选择一个  然后用户只输入营养值. 这样 对用户输入异常处理会非常简单.
+
+1. Add nutrirnt rule and set name search rule functions and stages implemented.
+2. Name Rule display and remove implemented.
+3. Set Name Rule buttons, menus, functions fully implemented.
+4. Apply Rule goal added
+
+TO DO: add rule, search name functions needed to be implemented
+
+------------------------------------------
+
+Dec 2 -- James Higgins, Kejia Fan, Yulu Zhou
+1. Made small changes to the height of the window made by MealSummaryStage. The "ok" button is now visible.
+2. Bugs found in BPTree.java. (rangeSearch methods and insert method)
+	- rangeSearch: does not give all of the values that are required for it to give, "==" comparative gives the same values as ">=".
+	- insert: sets up an AVL tree
+	
+TODO: Fix bugs in BPTree.java, then implement into program
+
+------------------------------------------
+
 TO BE UPDATED
