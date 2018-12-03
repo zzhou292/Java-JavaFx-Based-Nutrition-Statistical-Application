@@ -101,4 +101,11 @@ TODO: Fix bugs in BPTree.java, then implement into program
 
 ------------------------------------------
 
+Dec 3 -- Zhikang Meng 
+1.完全实现了ADD NUTRIENT窗口的所有功能, 新添加的Nutrient RULE 会被显示在QUERY列表中
+2.实现了Query的ClearAll 功能  会清空所有已添加的规则.
+
+1. Add Nutrient Function fully implemented, nutrient rule will be displayed in Query List
+2. ClearAll Function in Query implemented, all rules will be cleared if ClearAll Function is called.
+
 TO BE UPDATED
