@@ -88,7 +88,17 @@ Dec 2 -- Zhikang Meng, Jason Zhou
 4. Apply Rule goal added
 
 TO DO: add rule, search name functions needed to be implemented
+
 ------------------------------------------
 
+Dec 2 -- James Higgins, Kejia Fan, Yulu Zhou
+1. Made small changes to the height of the window made by MealSummaryStage. The "ok" button is now visible.
+2. Bugs found in BPTree.java. (rangeSearch methods and insert method)
+	- rangeSearch: does not give all of the values that are required for it to give, "==" comparative gives the same values as ">=".
+	- insert: sets up an AVL tree
+	
+TODO: Fix bugs in BPTree.java, then implement into program
+
+------------------------------------------
 
 TO BE UPDATED
