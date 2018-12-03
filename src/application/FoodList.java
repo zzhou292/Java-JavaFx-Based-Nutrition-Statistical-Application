@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -22,7 +23,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -49,7 +52,7 @@ public class FoodList extends VBox {
     this.currentFoodListView = new ListView<HBox>();
     this.foodData = new FoodData();
     this.menuBar = new MenuBar();
-    this.foodquery = new FoodQuery(this.currentFoodListView,this.currentFoodItemList);
+    this.foodquery = new FoodQuery(this.currentFoodListView, this.currentFoodItemList);
     mealList = new MealList();
     selectList = new ArrayList<FoodItem>();
     currentFoodItemList = new ArrayList<FoodItem>();
@@ -75,6 +78,7 @@ public class FoodList extends VBox {
     currentFoodItemList = foodData.getAllFoodItems();
     sortCurrentFoodItemList();
     currentFoodListView.getItems().clear();
+    selectList = new ArrayList<>();
     for (FoodItem fooditem : currentFoodItemList) {
       FoodItemView current = new FoodItemView(fooditem);
       Button select = new Button("select");
@@ -119,6 +123,116 @@ public class FoodList extends VBox {
     MenuItem save = new MenuItem("Save");
     Menu file = new Menu("File", null, load, save);
     MenuItem add = new MenuItem("Add");
+    add.setOnAction(e1 -> {
+      Stage addFoodStage = new Stage();
+
+      AnchorPane addFoodPane = new AnchorPane();
+
+      TextField name = new TextField();
+      TextField id = new TextField();
+      TextField fiber = new TextField();
+      TextField calories = new TextField();
+      TextField fat = new TextField();
+      TextField carbohydrate = new TextField();
+      TextField protein = new TextField();
+
+      Label nameLabel = new Label("Name:");
+      Label idLabel = new Label("ID:");
+      Label fiberLabel = new Label("Fiber:");
+      Label caloriesLabel = new Label("Calories:");
+      Label fatLabel = new Label("Fat:");
+      Label carbohydrateLabel = new Label("Carbohydrate:");
+      Label proteinLabel = new Label("Protein:");
+
+      Button confirm = new Button("Add Food");
+      confirm.setOnAction(e2 -> {
+        String buffer = "";
+        buffer = buffer + "Name:";
+        buffer = buffer + name.getText();
+        buffer = buffer + ";  ";
+
+        buffer = buffer + "ID:";
+        buffer = buffer + id.getText();
+        buffer = buffer + ";  ";
+
+        buffer = buffer + "Fiber:";
+        buffer = buffer + fiber.getText();
+        buffer = buffer + ";  ";
+
+        buffer = buffer + "Protein:";
+        buffer = buffer + protein.getText();
+        buffer = buffer + ";  ";
+
+        buffer = buffer + "Fat:";
+        buffer = buffer + fat.getText();
+        buffer = buffer + ";  ";
+
+        buffer = buffer + "Calories:";
+        buffer = buffer + calories.getText();
+        buffer = buffer + ";  ";
+
+        buffer = buffer + "Carbohydrate:";
+        buffer = buffer + carbohydrate.getText();
+        buffer = buffer + ";  ";
+
+        System.out.println(buffer);
+
+        addFoodStage.close();
+
+      });
+
+
+      Button cancel = new Button("Cancel");
+      cancel.setOnAction(e2 -> {
+        addFoodStage.close();
+
+      });
+
+      AnchorPane.setTopAnchor(nameLabel, 30.0);
+      AnchorPane.setTopAnchor(name, 30.0);
+      AnchorPane.setTopAnchor(fiberLabel, 70.0);
+      AnchorPane.setTopAnchor(proteinLabel, 110.0);
+      AnchorPane.setTopAnchor(fatLabel, 150.0);
+      AnchorPane.setTopAnchor(caloriesLabel, 190.0);
+      AnchorPane.setTopAnchor(carbohydrateLabel, 230.0);
+      AnchorPane.setTopAnchor(fiber, 70.0);
+      AnchorPane.setTopAnchor(calories, 190.0);
+      AnchorPane.setTopAnchor(fat, 150.0);
+      AnchorPane.setTopAnchor(carbohydrate, 230.0);
+      AnchorPane.setTopAnchor(protein, 110.0);
+      AnchorPane.setTopAnchor(id, 270.0);
+      AnchorPane.setTopAnchor(idLabel, 270.0);
+      AnchorPane.setTopAnchor(confirm, 310.0);
+      AnchorPane.setTopAnchor(cancel, 310.0);
+
+      AnchorPane.setLeftAnchor(fiberLabel, 20.0);
+      AnchorPane.setLeftAnchor(proteinLabel, 20.0);
+      AnchorPane.setLeftAnchor(fatLabel, 20.0);
+      AnchorPane.setLeftAnchor(caloriesLabel, 20.0);
+      AnchorPane.setLeftAnchor(carbohydrateLabel, 20.0);
+      AnchorPane.setLeftAnchor(nameLabel, 20.0);
+      AnchorPane.setLeftAnchor(idLabel, 20.0);
+      AnchorPane.setLeftAnchor(name, 120.0);
+      AnchorPane.setLeftAnchor(fiber, 120.0);
+      AnchorPane.setLeftAnchor(calories, 120.0);
+      AnchorPane.setLeftAnchor(fat, 120.0);
+      AnchorPane.setLeftAnchor(id, 120.0);
+      AnchorPane.setLeftAnchor(carbohydrate, 120.0);
+      AnchorPane.setLeftAnchor(protein, 120.0);
+      AnchorPane.setLeftAnchor(confirm, 50.0);
+      AnchorPane.setLeftAnchor(cancel, 200.0);
+
+      addFoodPane.getChildren().addAll(fiberLabel, caloriesLabel, fatLabel, carbohydrateLabel,
+          proteinLabel, name, nameLabel, fiber, calories, fat, carbohydrate, protein, confirm,
+          cancel, id, idLabel);
+
+      Scene addFoodScene = new Scene(addFoodPane, 300, 350);
+      addFoodStage.setScene(addFoodScene);
+      addFoodStage.setTitle("Add Food");
+      addFoodStage.show();
+      addFoodStage.setResizable(false);
+
+    });
     MenuItem clear = new MenuItem("Clear");
     MenuItem apply = new MenuItem("Apply Selection");
     MenuItem undo = new MenuItem("undoAll Selection");

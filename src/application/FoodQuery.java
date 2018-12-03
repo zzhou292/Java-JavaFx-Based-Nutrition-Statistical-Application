@@ -38,12 +38,10 @@ public class FoodQuery extends VBox {
   private ListView<HBox> currentFoodListView;// do update it when appropriate
   private List<FoodItem> queryFoodList;// do update it when appropriate
   private HBox nameRuleBox;
-  private String nameRule;
   private TextField nameRuleField;
 
   public FoodQuery(ListView<HBox> currentFoodListView, List<FoodItem> currentFoodItemList) {
     this.label = new Label("FoodQuery Rules");
-    nameRule = "";
     nameRuleField = new TextField();
     this.rules = new ArrayList<String>();
     this.menuBar = new MenuBar();
@@ -61,24 +59,23 @@ public class FoodQuery extends VBox {
 
   private void crateNameRuleBox() {
     Label nameRuleLabel = new Label("Name Rule: ");
-    Button remove = new Button("remove");
+    Button clear = new Button("clear");
     nameRuleField.setEditable(false);
-    nameRuleBox.getChildren().addAll(nameRuleLabel, nameRuleField, remove);
-    handleNameRuleRemove(remove);
+    nameRuleBox.getChildren().addAll(nameRuleLabel, nameRuleField, clear);
+    handleNameRuleClear(clear);
   }
 
 
-  private void handleNameRuleRemove(Button remove) {
-    remove.setOnAction(e1 -> {
-      Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm to remove this name rule");
+  private void handleNameRuleClear(Button clear) {
+    clear.setOnAction(e1 -> {
+      Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm to clear this name rule");
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {
           if (t.getButtonData().isCancelButton())
             return true;
           else {
-            nameRule = "";
-            nameRuleField.setText(nameRule);
+            nameRuleField.setText("");
             return false;
           }
         }
@@ -101,22 +98,22 @@ public class FoodQuery extends VBox {
     MenuItem addNutrientRule = new MenuItem("Add Nutrient Rule");
     addNutrientRule.setOnAction(rule -> {
       AddNutrientStage ans = new AddNutrientStage();
-     ans.show();
+      ans.show();
     });
 
     MenuItem setNameRule = new MenuItem("Set Name Rule");
     setNameRule.setOnAction(searchnames -> {
-      SetNameRuleStage setNameRuleStage = new SetNameRuleStage(nameRule, nameRuleField);
+      SetNameRuleStage setNameRuleStage = new SetNameRuleStage(nameRuleField);
       setNameRuleStage.show();
     });
 
 
-    MenuItem clear = new MenuItem("Clear Rules");
-    MenuItem applyName = new MenuItem("Apply Name Rules");
-    MenuItem applyNutrientRule = new MenuItem("Apply Nutrient Rules");
-    MenuItem applyallRule = new MenuItem("Apply All Rules");
-    Menu operation = new Menu("Operation", null, addNutrientRule, setNameRule, applyName,
-        applyNutrientRule, applyallRule, clear);
+    MenuItem clear = new MenuItem("Clear All Rules");
+    MenuItem filterByName = new MenuItem("Filter by Name");
+    MenuItem filterByNutrient = new MenuItem("Filter By Nutrient");
+    MenuItem filterByAllRules = new MenuItem("Filter by All Rules");
+    Menu operation = new Menu("Operation", null, addNutrientRule, setNameRule, filterByName,
+        filterByNutrient, filterByAllRules, clear);
     menuBar.getMenus().addAll(operation);
 
   }

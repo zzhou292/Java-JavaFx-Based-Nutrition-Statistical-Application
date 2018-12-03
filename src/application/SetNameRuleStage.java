@@ -11,14 +11,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class SetNameRuleStage extends Stage {
-  private String nameRule;
+
   private TextField nameRuleField;
   private AnchorPane ap1;
   private Scene sc;
   private TextField textField;
 
-  public SetNameRuleStage(String nameRule, TextField nameRuleField) {
-    this.nameRule = nameRule;
+  public SetNameRuleStage(TextField nameRuleField) {
+
     this.nameRuleField = nameRuleField;
     this.ap1 = new AnchorPane();
     this.sc = new Scene(ap1, 300, 80);
@@ -48,7 +48,7 @@ public class SetNameRuleStage extends Stage {
       String searchinput = textField.getText().trim();
       // get Text
       if (searchinput.equals("") == false) {
-        nameRule = searchinput;
+
         nameRuleField.setText(searchinput);
         this.close();
       } else {
@@ -68,7 +68,7 @@ public class SetNameRuleStage extends Stage {
 
   private void setLayout() {
     this.setTitle("Set Name Rule");
-    this.setScene(sc);    
+    this.setScene(sc);
     this.setResizable(false);
     this.initModality(Modality.APPLICATION_MODAL);
 
