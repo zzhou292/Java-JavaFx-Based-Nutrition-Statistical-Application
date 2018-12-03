@@ -72,7 +72,7 @@ public class FoodList extends VBox {
   }
 
 
-  public void updateList(String filePath) {
+  private void updateList(String filePath) {
     this.foodData = new FoodData();
     foodData.loadFoodItems(filePath);
     currentFoodItemList = foodData.getAllFoodItems();

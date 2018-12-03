@@ -54,7 +54,7 @@ public class MealSummaryStage extends Stage {
     this.setResizable(false);
     this.setScene(analysis);
     this.setWidth(300);
-    this.setHeight(265);
+    this.setHeight(240);
     this.initModality(Modality.APPLICATION_MODAL);
 
   }

@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  */
 public class FoodQuery extends VBox {
 
-  private ListView<HBox> queryRuleList;
+  private ListView<HBox> queryRuleListView;
   private List<String> rules;
   private MenuBar menuBar;
   private Label label;
@@ -48,7 +48,7 @@ public class FoodQuery extends VBox {
     this.currentFoodItemList = currentFoodItemList;
     this.currentFoodListView = currentFoodListView;
     queryFoodList = new ArrayList<FoodItem>();
-    this.queryRuleList = new ListView<HBox>();
+    this.queryRuleListView = new ListView<HBox>();
     nameRuleBox = new HBox();
     crateNameRuleBox();
     createMenubar();
@@ -87,7 +87,7 @@ public class FoodQuery extends VBox {
 
   private void boxAdjustment() {
 
-    this.getChildren().addAll(this.label, this.menuBar, this.nameRuleBox, this.queryRuleList);
+    this.getChildren().addAll(this.label, this.menuBar, this.nameRuleBox, this.queryRuleListView);
     VBox.setMargin(label, new Insets(0, 0, 0, 130));
     this.setPrefWidth(370.0);
     this.setStyle("-fx-background-color:#BFEFFF");
@@ -97,7 +97,7 @@ public class FoodQuery extends VBox {
   private void createMenubar() {
     MenuItem addNutrientRule = new MenuItem("Add Nutrient Rule");
     addNutrientRule.setOnAction(rule -> {
-      AddNutrientStage ans = new AddNutrientStage();
+      AddNutrientStage ans = new AddNutrientStage(queryRuleListView, rules);
       ans.show();
     });
 
@@ -112,11 +112,33 @@ public class FoodQuery extends VBox {
     MenuItem filterByName = new MenuItem("Filter by Name");
     MenuItem filterByNutrient = new MenuItem("Filter By Nutrient");
     MenuItem filterByAllRules = new MenuItem("Filter by All Rules");
+    MenuItem unDoFilters = new MenuItem("unDo All Filters");
     Menu operation = new Menu("Operation", null, addNutrientRule, setNameRule, filterByName,
-        filterByNutrient, filterByAllRules, clear);
+        filterByNutrient, filterByAllRules, unDoFilters, clear);
     menuBar.getMenus().addAll(operation);
-
+    handleClearEvent(clear);
   }
+
+  private void handleClearEvent(MenuItem clear) {
+    clear.setOnAction(e1 -> {
+      String message = "Confirm to clear all query rules!";
+      Alert alert = new Alert(AlertType.CONFIRMATION, message);
+      alert.showAndWait().filter(new Predicate<ButtonType>() {
+        @Override
+        public boolean test(ButtonType t) {
+          if (t.getButtonData().isCancelButton())
+            return true;
+          else {
+            queryRuleListView.getItems().clear();
+            rules = new ArrayList<String>();
+            nameRuleField.setText("");
+            return false;
+          }
+        }
+      });    
+    });
+  }
+
 
   public void updateList(String filePath) {
 
