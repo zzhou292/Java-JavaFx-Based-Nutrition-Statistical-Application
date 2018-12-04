@@ -31,10 +31,12 @@ public class ApplySelectionStage extends Stage {
   private HBox hbox;
   private Label count;
   private HBox countBox;
+  private FoodList foodList;
+  private MealList mealList;
 
-
-  public ApplySelectionStage(List<FoodItem> selectList) {
-
+  public ApplySelectionStage(List<FoodItem> selectList, FoodList foodList, MealList mealList) {
+    this.mealList = mealList;
+    this.foodList = foodList;
     this.selectList = selectList;
     currentselectList = new ListView<HBox>();
     vbox = new VBox();
@@ -44,11 +46,25 @@ public class ApplySelectionStage extends Stage {
     this.count = new Label(String.valueOf(selectList.size()));
     countBox = new HBox(5);
     countBox.setStyle("-fx-background-color:#BFEFFF");
+    handleOKCancelEvent(ok, cancel);
     createCountLabels();
     setSelectList();
     setLayout();
     setStageDisplay();
 
+
+  }
+
+  private void handleOKCancelEvent(Button ok, Button cancel) {
+    cancel.setOnAction(event -> {
+      this.close();
+    });
+    ok.setOnAction(event -> {
+      mealList.addFoodItems(selectList);
+      mealList.getCount().setText(String.valueOf(mealList.getCurrentMealList().size()));
+      this.close();
+      this.foodList.resetSelectButton();
+    });
 
   }
 
@@ -88,18 +104,6 @@ public class ApplySelectionStage extends Stage {
 
 
 
-  /**
-   * @return the ok
-   */
-  public Button getOk() {
-    return ok;
-  }
 
-  /**
-   * @return the cancel
-   */
-  public Button getCancel() {
-    return cancel;
-  }
 
 }

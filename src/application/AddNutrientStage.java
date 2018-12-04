@@ -2,8 +2,6 @@ package application;
 
 import java.util.List;
 import java.util.function.Predicate;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,6 +22,9 @@ public class AddNutrientStage extends Stage {
   private Scene scene;
   private ListView<HBox> queryRuleListView;
   private List<String> rules;
+  private ComboBox<String> comboBoxNutritions;
+  private ComboBox<String> comboBoxSigns;
+  private TextField input;
 
   public AddNutrientStage(ListView<HBox> queryRuleList, List<String> rules) {
     this.anchorPane = new AnchorPane();
@@ -35,26 +36,25 @@ public class AddNutrientStage extends Stage {
 
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
+
   private void crateAddWindow() {
-    ObservableList<String> nutritions =
-        FXCollections.observableArrayList("Fiber", "Protein", "Fat", "Calories", "Carbohydrate");
-    final ComboBox comboBoxNutritions = new ComboBox(nutritions);
-    ObservableList<String> signs = FXCollections.observableArrayList("=", ">=", "<=");
-    final ComboBox comboBoxSigns = new ComboBox(signs);
-    TextField input = new TextField();
+
+    this.comboBoxNutritions = new ComboBox<String>();
+    comboBoxNutritions.getItems().addAll("Fiber", "Protein", "Fat", "Calories", "Carbohydrate");
+    this.comboBoxSigns = new ComboBox<String>();
+    comboBoxSigns.getItems().addAll("=", ">=", "<=");
+    this.input = new TextField();
     Button confirm = new Button("Add Rule");
     Button cancel = new Button("Cancel");
     Label nulabel = new Label("Nutrient                        comparator     value");
     anchorPane.getChildren().addAll(nulabel, comboBoxNutritions, comboBoxSigns, input, confirm,
         cancel);
-    setComponentLayout(nulabel, comboBoxNutritions, comboBoxSigns, input, confirm, cancel);
-    handleCancelConfirmEvent(cancel, confirm, comboBoxNutritions, comboBoxSigns, input);
+    setComponentLayout(nulabel, input, confirm, cancel);
+    handleCancelConfirmEvent(cancel, confirm);
   }
 
-  @SuppressWarnings({"rawtypes"})
-  private void handleCancelConfirmEvent(Button cancel, Button confirm, ComboBox comboBoxNutritions,
-      ComboBox comboBoxSigns, TextField input) {
+
+  private void handleCancelConfirmEvent(Button cancel, Button confirm) {
 
 
     cancel.setOnAction(e1 -> {
@@ -64,7 +64,7 @@ public class AddNutrientStage extends Stage {
 
     confirm.setOnAction(e1 -> {
       String buffer = "";
-      boolean valid = exceptionHandle(comboBoxNutritions, comboBoxSigns, input);
+      boolean valid = exceptionHandle();
       if (valid == false)
         return;
       else {
@@ -80,14 +80,13 @@ public class AddNutrientStage extends Stage {
 
   }
 
-  @SuppressWarnings({"rawtypes"})
-  private boolean exceptionHandle(ComboBox comboBoxNutritions, ComboBox comboBoxSigns,
-      TextField input) {
+
+  private boolean exceptionHandle() {
     Double value = null;
     // exception handling
     if (comboBoxNutritions.getValue() == null || comboBoxSigns.getValue() == null
         || input.getText().equals("")) {
-      String message = "Make sure to choose all component and input value, please try again!";
+      String message = "Make sure to choose all component and enter the value, please try again!";
       Alert alert = new Alert(AlertType.INFORMATION, message);
       this.close();
       alert.showAndWait().filter(response -> response == ButtonType.OK);
@@ -149,9 +148,8 @@ public class AddNutrientStage extends Stage {
     });
   }
 
-  @SuppressWarnings({"rawtypes"})
-  private void setComponentLayout(Label nulabel, ComboBox comboBoxNutritions,
-      ComboBox comboBoxSigns, TextField input, Button confirm, Button cancel) {
+
+  private void setComponentLayout(Label nulabel, TextField input, Button confirm, Button cancel) {
     AnchorPane.setLeftAnchor(comboBoxNutritions, 20.0);
     AnchorPane.setLeftAnchor(comboBoxSigns, 160.0);
     AnchorPane.setLeftAnchor(input, 240.0);

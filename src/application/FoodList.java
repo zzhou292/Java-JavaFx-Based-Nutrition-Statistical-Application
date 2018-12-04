@@ -255,8 +255,18 @@ public class FoodList extends VBox {
       File loadFile = loadChooser.showOpenDialog(primaryStage);
       if (loadFile == null)
         return;
-      else
+      else {
+        // check if the chosen file can be read, if not just return without any warning
+        File trialLoadFile = new File(loadFile.getAbsolutePath());
+        if (!trialLoadFile.canRead())
+          return;
+        // for the readable file, update the food list
         updateList(loadFile.getAbsolutePath());
+        String message = "Successfully load the file: " + loadFile.getAbsolutePath()
+            + "\nAnd successfully clear the unapplied selection items from the previous food list.";
+        Alert alert = new Alert(AlertType.INFORMATION, message);
+        alert.showAndWait().filter(response -> response == ButtonType.OK);
+      }
     });
 
     save.setOnAction(event -> {
@@ -267,8 +277,17 @@ public class FoodList extends VBox {
       File saveFile = SaveChooser.showSaveDialog(primaryStage);
       if (saveFile == null)
         return;
-      else
+      else {
+        // check if the chosen file can be write, if not just return without any warning
+        File trailSaveFile = new File(saveFile.getAbsolutePath());
+        if (!trailSaveFile.canWrite())
+          return;
         foodData.saveFoodItems(saveFile.getAbsolutePath());
+        String message =
+            "Successfully save the current food list to the file: " + saveFile.getAbsolutePath();
+        Alert alert = new Alert(AlertType.INFORMATION, message);
+        alert.showAndWait().filter(response -> response == ButtonType.OK);
+      }
     });
   }
 
@@ -315,7 +334,7 @@ public class FoodList extends VBox {
     });
   }
 
-  private void resetSelectButton() {
+  public void resetSelectButton() {
     selectList = new ArrayList<FoodItem>();
     currentFoodListView.getItems().clear();
     for (FoodItem fooditem : currentFoodItemList) {
@@ -329,26 +348,12 @@ public class FoodList extends VBox {
 
   private void handleApplyButtonEvent(MenuItem apply) {
     apply.setOnAction(event -> {
-      ApplySelectionStage appStage = new ApplySelectionStage(selectList);
-      handleOKCancelEvent(appStage.getCancel(), appStage.getOk(), appStage);
+      ApplySelectionStage appStage = new ApplySelectionStage(selectList,this,mealList);     
       appStage.show();
     });
-
-
   }
 
 
-  private void handleOKCancelEvent(Button cancel, Button ok, ApplySelectionStage appStage) {
-    cancel.setOnAction(event -> {
-      appStage.close();
-    });
-    ok.setOnAction(event -> {
-      mealList.addFoodItems(selectList);
-      mealList.getCount().setText(String.valueOf(mealList.getCurrentMealList().size()));
-      appStage.close();
-      resetSelectButton();
-    });
-  }
 
 
 
