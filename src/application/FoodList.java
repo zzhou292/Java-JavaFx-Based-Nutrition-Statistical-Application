@@ -146,6 +146,44 @@ public class FoodList extends VBox {
 
       Button confirm = new Button("Add Food");
       confirm.setOnAction(e2 -> {
+    	  	
+    	  if (name.getText().equals("")||id.getText().equals("")||fiber.getText().equals("")||protein.getText().equals("")||
+    			  fat.getText().equals("")||calories.getText().equals("")||carbohydrate.getText().equals("")) {
+    		      String message = "Make sure to choose all component and enter the value, please try again!";
+    		      Alert alert = new Alert(AlertType.INFORMATION, message);
+    		      addFoodStage.close();
+    		      alert.showAndWait().filter(response -> response == ButtonType.OK);
+    		    }
+    	  
+    	  try {
+    		  Double fibervalue = null;
+    		  Double proteinvalue = null;
+    		  Double fatvalue = null;
+    		  Double caloriesvalue = null;
+    		  Double carbohydratevalue = null;
+    	      fibervalue = Double.valueOf(fiber.getText().trim());
+    	      proteinvalue = Double.valueOf(protein.getText().trim());
+    	      fatvalue = Double.valueOf(fat.getText().trim());
+    	      caloriesvalue = Double.valueOf(calories.getText().trim());
+    	      carbohydratevalue = Double.valueOf(carbohydrate.getText().trim());
+    	      
+    	      if (fibervalue < 0.0||proteinvalue<0.0||fatvalue<0.0||caloriesvalue<0.0||carbohydratevalue<0.0) {
+    	    	  	String message = "The input of the nutrient can not be negative, please try again!";
+    	    	  	Alert alert = new Alert(AlertType.INFORMATION, message);
+    	    	  	addFoodStage.close();
+    	        alert.showAndWait().filter(response -> response == ButtonType.OK);
+    	       }
+    	    } catch (Exception e) {
+    	      String message = "At least one nutrition value input is invalid, please type a number in nutrient textbox!";
+    	      Alert alert = new Alert(AlertType.INFORMATION, message);
+    	      addFoodStage.close();
+    	      alert.showAndWait().filter(response -> response == ButtonType.OK);
+    	    }
+    	  
+    	  
+    	  
+    	  
+    	  
         String buffer = "";
         buffer = buffer + "Name:";
         buffer = buffer + name.getText();
@@ -178,6 +216,14 @@ public class FoodList extends VBox {
         System.out.println(buffer);
 
         addFoodStage.close();
+        
+        
+      //  if (value < 0.0) {
+        //    String message = "The input of the nutrient can not be negative, please try again!";
+          //  Alert alert = new Alert(AlertType.INFORMATION, message);
+            //this.close();
+            //alert.showAndWait().filter(response -> response == ButtonType.OK);
+            //return false;
 
       });
 
