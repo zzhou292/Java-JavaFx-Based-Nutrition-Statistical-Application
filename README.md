@@ -108,4 +108,15 @@ Dec 3 -- Zhikang Meng
 1. Add Nutrient Function fully implemented, nutrient rule will be displayed in Query List
 2. ClearAll Function in Query implemented, all rules will be cleared if ClearAll Function is called.
 
+------------------------------------------
+
+Dec 4 -- Kejia Fan, James Higgins, Yulu Zhou
+1. insert method now creates a correct BPTree
+2. rangeSearch now properly works for comparatives "==" and ">="
+3. Bugs found in BPTree.java. (rangeSearch((Double), "<="))
+	- rangeSearch: does not consistantly give all of the values that are required for it to give for comparative "<=".
+	
+TODO: Fix bug found with rangeSearch((Double), "<="). Implement BPTree into the main program.
+
+------------------------------------------
 TO BE UPDATED
