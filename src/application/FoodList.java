@@ -308,6 +308,7 @@ public class FoodList extends VBox {
 
   public void queryOnShown(List<FoodItem> queryFoodList) {
     currentFoodListView.getItems().clear();
+    sortQueryFoodList(queryFoodList);
     for (FoodItem fooditem : queryFoodList) {
       FoodItemView current = new FoodItemView(fooditem);
       Button select = new Button();
@@ -319,6 +320,20 @@ public class FoodList extends VBox {
       currentFoodListView.getItems().add(current);
     }
     currentFoodListView.refresh();
+  }
+
+  private void sortQueryFoodList(List<FoodItem> queryFoodList) {
+    // sort this food item list by create a anonymous comparator class
+    Collections.sort(queryFoodList, new Comparator<FoodItem>() {
+
+      @Override
+      public int compare(FoodItem o1, FoodItem o2) {
+        // invoke the compare to method of a string since name is a string
+        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+      }
+
+    });
+
   }
 
   public void noFilterOnShown() {

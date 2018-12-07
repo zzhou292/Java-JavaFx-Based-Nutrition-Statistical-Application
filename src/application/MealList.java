@@ -112,8 +112,8 @@ public class MealList extends VBox {
         fattotal = fattotal + fi.getNutrientValue("fat");
         caloriestotal = caloriestotal + fi.getNutrientValue("calories");
         carbohydratetotal = carbohydratetotal + fi.getNutrientValue("carbohydrate");
-        
       }
+     
 
       this.displaySummary(proteintotal, fibertotal, fattotal, caloriestotal, carbohydratetotal,
           count);

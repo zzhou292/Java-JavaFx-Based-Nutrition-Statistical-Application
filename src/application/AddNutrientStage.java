@@ -40,9 +40,9 @@ public class AddNutrientStage extends Stage {
   private void crateAddWindow() {
 
     this.comboBoxNutritions = new ComboBox<String>();
-    comboBoxNutritions.getItems().addAll("Fiber", "Protein", "Fat", "Calories", "Carbohydrate");
+    comboBoxNutritions.getItems().addAll("calories", "fat", "carbohydrate", "fiber", "protein");
     this.comboBoxSigns = new ComboBox<String>();
-    comboBoxSigns.getItems().addAll("=", ">=", "<=");
+    comboBoxSigns.getItems().addAll("==", ">=", "<=");
     this.input = new TextField();
     Button confirm = new Button("Add Rule");
     Button cancel = new Button("Cancel");

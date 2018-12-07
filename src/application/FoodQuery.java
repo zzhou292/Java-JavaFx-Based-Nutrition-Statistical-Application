@@ -132,10 +132,10 @@ public class FoodQuery extends VBox {
         /**
          * uncomment after implement BPTree
          */
-//        List<FoodItem> NameFiltered = foodData.filterByName(nameRuleField.getText());
-//        List<FoodItem> NutriFiltered = foodData.filterByNutrients(rules);
-//        List<FoodItem> interSection = getIntersection(NameFiltered, NutriFiltered);
-//        foodList.queryOnShown(interSection);
+        List<FoodItem> NameFiltered = foodData.filterByName(nameRuleField.getText());
+        List<FoodItem> NutriFiltered = foodData.filterByNutrients(rules);
+        List<FoodItem> interSection = getIntersection(NameFiltered, NutriFiltered);
+        foodList.queryOnShown(interSection);
         workingFilter.setText("Both filters are now working!");
       }
     });
@@ -143,16 +143,16 @@ public class FoodQuery extends VBox {
   }
 
 
-//  private List<FoodItem> getIntersection(List<FoodItem> nameFiltered,
-//      List<FoodItem> nutriFiltered) {
-//    List<FoodItem> interset = new ArrayList<FoodItem>();
-//    for (FoodItem fi : nameFiltered) {
-//      if (nutriFiltered.contains(fi)) {
-//        interset.add(fi);
-//      }
-//    }
-//    return interset;
-//  }
+  private List<FoodItem> getIntersection(List<FoodItem> nameFiltered,
+      List<FoodItem> nutriFiltered) {
+    List<FoodItem> interset = new ArrayList<FoodItem>();
+    for (FoodItem fi : nameFiltered) {
+      if (nutriFiltered.contains(fi)) {
+        interset.add(fi);
+      }
+    }
+    return interset;
+  }
 
 
   private void handleNutrientEvent(MenuItem filterByNutrient) {
@@ -166,8 +166,8 @@ public class FoodQuery extends VBox {
         /**
          * uncomment after implement BPTree
          */
-        // queryFoodList = foodData.filterByNutrients(rules);
-        // foodList.queryOnShown(queryFoodList);
+         queryFoodList = foodData.filterByNutrients(rules);
+         foodList.queryOnShown(queryFoodList);
 
         workingFilter.setText("Nutrient filter now working!");
       }

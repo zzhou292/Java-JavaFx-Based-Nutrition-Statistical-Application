@@ -459,12 +459,11 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
      * @see BPTree.Node#rangeSearch(Comparable, String)
      */
     List<V> rangeSearch(K key, String comparator) {
-      List<V> result = new LinkedList<V>();
+      List<V> result = new ArrayList<V>();
       LeafNode current = this;
       while (current != null) {
         Iterator<K> kIt = current.keys.iterator();
         Iterator<V> vIt = current.values.iterator();
-        System.out.println(current.keys);
         int count = 0;
 
         while (kIt.hasNext()) {
@@ -529,7 +528,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
       bpTree.insert(j, j);
       System.out.println("\n\nTree structure:\n" + j + " is added \n" + bpTree.toString());
     }
-    List<Double> filteredValues = bpTree.rangeSearch(0.8d, "<=");
+    List<Double> filteredValues = bpTree.rangeSearch(0.9d, ">=");
     System.out.println("Filtered values: " + filteredValues.toString());
   }
 

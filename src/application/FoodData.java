@@ -34,16 +34,16 @@ public class FoodData implements FoodDataADT<FoodItem> {
     /**
      * uncomment after implement BPTree
      */
-    // BPTree<Double, FoodItem> calories = new BPTree<>(3);
-    // BPTree<Double, FoodItem> fat = new BPTree<>(3);
-    // BPTree<Double, FoodItem> carbohydrate = new BPTree<>(3);
-    // BPTree<Double, FoodItem> fiber = new BPTree<>(3);
-    // BPTree<Double, FoodItem> protein = new BPTree<>(3);
-    // indexes.put("calories", calories);
-    // indexes.put("fat", fat);
-    // indexes.put("carbohydrate", carbohydrate);
-    // indexes.put("fiber", fiber);
-    // indexes.put("protein", protein);
+    BPTree<Double, FoodItem> calories = new BPTree<>(3);
+    BPTree<Double, FoodItem> fat = new BPTree<>(3);
+    BPTree<Double, FoodItem> carbohydrate = new BPTree<>(3);
+    BPTree<Double, FoodItem> fiber = new BPTree<>(3);
+    BPTree<Double, FoodItem> protein = new BPTree<>(3);
+    indexes.put("calories", calories);
+    indexes.put("fat", fat);
+    indexes.put("carbohydrate", carbohydrate);
+    indexes.put("fiber", fiber);
+    indexes.put("protein", protein);
   }
 
 
@@ -88,12 +88,12 @@ public class FoodData implements FoodDataADT<FoodItem> {
         /**
          * uncomment after implement BPTree
          */
-        // HashMap<String, Double> nuTri= foodItem.getNutrients();
-        // indexes.get("calories").insert(nuTri.get("calories"), foodItem);
-        // indexes.get("fat").insert(nuTri.get("fat"), foodItem);
-        // indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
-        // indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
-        // indexes.get("protein").insert(nuTri.get("protein"), foodItem);
+        HashMap<String, Double> nuTri = foodItem.getNutrients();
+        indexes.get("calories").insert(nuTri.get("calories"), foodItem);
+        indexes.get("fat").insert(nuTri.get("fat"), foodItem);
+        indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
+        indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
+        indexes.get("protein").insert(nuTri.get("protein"), foodItem);
       }
       input.close();// close file
     } catch (FileNotFoundException e) {
@@ -141,39 +141,39 @@ public class FoodData implements FoodDataADT<FoodItem> {
     /**
      * uncomment after implement BPTree
      */
-    // if (rules.size() == 1) {
-    // String[] firstRule = rules.get(0).split(" ");
-    // return indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
-    // }
-    //
-    // List<FoodItem> result = new ArrayList<FoodItem>();
-    // String[] firstRule = rules.get(0).split(" ");
-    // result = indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
-    // if (result.size() == 0)
-    // return result;
-    // for (int i = 1; i < rules.size(); i++) {
-    // String[] currentRule = rules.get(i).split(" ");
-    // List<FoodItem> currentList =
-    // indexes.get(currentRule[0]).rangeSearch(Double.valueOf(currentRule[2]), currentRule[1]);
-    // result = getIntersection(result, currentList);
-    // if (result.size() == 0)
-    // return result;
-    // }
-    //
-    // return result;
-    return null;
+    if (rules.size() == 1) {
+      String[] firstRule = rules.get(0).split(" ");
+      return indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
+    }
+
+    List<FoodItem> result = new ArrayList<FoodItem>();
+    String[] firstRule = rules.get(0).split(" ");
+    result = indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
+    if (result.size() == 0)
+      return result;
+    for (int i = 1; i < rules.size(); i++) {
+      String[] currentRule = rules.get(i).split(" ");
+      List<FoodItem> currentList =
+          indexes.get(currentRule[0]).rangeSearch(Double.valueOf(currentRule[2]), currentRule[1]);
+      result = getIntersection(result, currentList);
+      if (result.size() == 0)
+        return result;
+    }
+
+    return result;
+
   }
 
-//   private List<FoodItem> getIntersection(List<FoodItem> result, List<FoodItem> currentList) {
-//   List<FoodItem> interset = new ArrayList<FoodItem>();
-//   for (FoodItem fi : result) {
-//   if (currentList.contains(fi)) {
-//   interset.add(fi);
-//   }
-//   }
-//   return interset;
-//   }
-
+  private List<FoodItem> getIntersection(List<FoodItem> result, List<FoodItem> currentList) {
+    List<FoodItem> interset = new ArrayList<FoodItem>();
+    for (FoodItem fi : result) {
+      if (currentList.contains(fi)) {
+        interset.add(fi);
+      }
+    }
+    return interset;
+  }
+  
 
 
   /**
@@ -187,12 +187,12 @@ public class FoodData implements FoodDataADT<FoodItem> {
     /**
      * uncomment after implement BPTree
      */
-    // HashMap<String, Double> nuTri= foodItem.getNutrients();
-    // indexes.get("calories").insert(nuTri.get("calories"), foodItem);
-    // indexes.get("fat").insert(nuTri.get("fat"), foodItem);
-    // indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
-    // indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
-    // indexes.get("protein").insert(nuTri.get("protein"), foodItem);
+     HashMap<String, Double> nuTri= foodItem.getNutrients();
+     indexes.get("calories").insert(nuTri.get("calories"), foodItem);
+     indexes.get("fat").insert(nuTri.get("fat"), foodItem);
+     indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
+     indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
+     indexes.get("protein").insert(nuTri.get("protein"), foodItem);
   }
 
   /**
