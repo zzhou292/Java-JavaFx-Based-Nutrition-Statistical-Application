@@ -285,9 +285,8 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
     			kidIndex = i;
     		}
     	}
-    	if(kidIndex == -1 || kidIndex == 0) return children.get(1);
-    	else if(kidIndex == children.size() - 1) return children.get(kidIndex);
-    	else return children.get(kidIndex + 1);
+    	if(kidIndex == -1) return children.get(keys.size());
+        else return children.get(kidIndex + 1);
     }
     /**
      * (non-Javadoc)
