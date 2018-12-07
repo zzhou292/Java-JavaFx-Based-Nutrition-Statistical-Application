@@ -47,22 +47,66 @@ public class FoodList extends VBox {
   private MealList mealList;
   private Stage primaryStage;
   private FoodQuery foodquery;
+  private boolean openLoad;
+  private Label count;
+  private HBox countBox;
 
   public FoodList(Stage primaryStage) {
+    openLoad = false;
     this.currentFoodListView = new ListView<HBox>();
     this.foodData = new FoodData();
     this.menuBar = new MenuBar();
-    this.foodquery = new FoodQuery(this.currentFoodListView, this.currentFoodItemList);
+    this.foodquery = new FoodQuery(this);
     mealList = new MealList();
     selectList = new ArrayList<FoodItem>();
     currentFoodItemList = new ArrayList<FoodItem>();
     this.label = new Label("Food Item List");
+    this.count = new Label(String.valueOf(currentFoodItemList.size()));
     this.primaryStage = primaryStage;
+    createCountLabels();
     createMenubar();
     boxAdjustment();
 
   }
 
+  public void refreshAfterAdd() {
+    currentFoodItemList = foodData.getAllFoodItems();
+    count.setText(String.valueOf(currentFoodItemList.size()));
+    sortCurrentFoodItemList();
+    currentFoodListView.getItems().clear();
+    for (FoodItem fooditem : currentFoodItemList) {
+      FoodItemView current = new FoodItemView(fooditem);
+      Button select = new Button();
+      if (selectList.contains(fooditem))
+        select.setText("unselect");
+      else
+        select.setText("select");
+      handleSelectButtonEvent(current, select, fooditem);
+      currentFoodListView.getItems().add(current);
+    }
+    currentFoodListView.refresh();
+    foodquery.getWorkingFilter().setText("No Filter is currently working!");
+  }
+
+  public void resetSelectButton() {
+    selectList = new ArrayList<FoodItem>();
+    currentFoodListView.getItems().clear();
+    for (FoodItem fooditem : currentFoodItemList) {
+      FoodItemView current = new FoodItemView(fooditem);
+      Button select = new Button("select");
+      handleSelectButtonEvent(current, select, fooditem);
+      currentFoodListView.getItems().add(current);
+    }
+    currentFoodListView.refresh();
+    foodquery.getWorkingFilter().setText("No Filter is currently working!");
+  }
+
+  private void handleApplyButtonEvent(MenuItem apply) {
+    apply.setOnAction(event -> {
+      ApplySelectionStage appStage = new ApplySelectionStage(selectList, this, mealList);
+      appStage.show();
+    });
+  }
 
   /**
    * @return the foodquery
@@ -71,11 +115,26 @@ public class FoodList extends VBox {
     return foodquery;
   }
 
+  /**
+   * @return the ml
+   */
+  public MealList getMealList() {
+    return mealList;
+  }
+
+  private void createCountLabels() {
+
+    countBox = new HBox(5);
+    Label countlb = new Label("Total Food Items count: ");
+    countBox.getChildren().addAll(countlb, count);
+  }
 
   private void updateList(String filePath) {
     this.foodData = new FoodData();
     foodData.loadFoodItems(filePath);
+    foodquery.updateFoodData(foodData);
     currentFoodItemList = foodData.getAllFoodItems();
+    count.setText(String.valueOf(currentFoodItemList.size()));
     sortCurrentFoodItemList();
     currentFoodListView.getItems().clear();
     selectList = new ArrayList<>();
@@ -95,23 +154,17 @@ public class FoodList extends VBox {
       @Override
       public int compare(FoodItem o1, FoodItem o2) {
         // invoke the compare to method of a string since name is a string
-        return o1.getName().compareTo(o2.getName());
+        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
       }
 
     });
   }
 
 
-  /**
-   * @return the ml
-   */
-  public MealList getMealList() {
-    return mealList;
-  }
 
   private void boxAdjustment() {
 
-    this.getChildren().addAll(this.label, this.menuBar, this.currentFoodListView);
+    this.getChildren().addAll(this.label, this.menuBar, this.countBox, this.currentFoodListView);
     VBox.setMargin(label, new Insets(0, 0, 0, 130));
     this.setPrefWidth(360.0);
     this.setStyle("-fx-background-color:#BFEFFF");
@@ -122,178 +175,36 @@ public class FoodList extends VBox {
     MenuItem load = new MenuItem("Load");
     MenuItem save = new MenuItem("Save");
     Menu file = new Menu("File", null, load, save);
-    MenuItem add = new MenuItem("Add");
-    add.setOnAction(e1 -> {
-      Stage addFoodStage = new Stage();
-
-      AnchorPane addFoodPane = new AnchorPane();
-
-      TextField name = new TextField();
-      TextField id = new TextField();
-      TextField fiber = new TextField();
-      TextField calories = new TextField();
-      TextField fat = new TextField();
-      TextField carbohydrate = new TextField();
-      TextField protein = new TextField();
-
-      Label nameLabel = new Label("Name:");
-      Label idLabel = new Label("ID:");
-      Label fiberLabel = new Label("Fiber:");
-      Label caloriesLabel = new Label("Calories:");
-      Label fatLabel = new Label("Fat:");
-      Label carbohydrateLabel = new Label("Carbohydrate:");
-      Label proteinLabel = new Label("Protein:");
-
-      Button confirm = new Button("Add Food");
-      confirm.setOnAction(e2 -> {
-    	  	
-    	  if (name.getText().equals("")||id.getText().equals("")||fiber.getText().equals("")||protein.getText().equals("")||
-    			  fat.getText().equals("")||calories.getText().equals("")||carbohydrate.getText().equals("")) {
-    		      String message = "Make sure to choose all component and enter the value, please try again!";
-    		      Alert alert = new Alert(AlertType.INFORMATION, message);
-    		      addFoodStage.close();
-    		      alert.showAndWait().filter(response -> response == ButtonType.OK);
-    		    }
-    	  
-    	  try {
-    		  Double fibervalue = null;
-    		  Double proteinvalue = null;
-    		  Double fatvalue = null;
-    		  Double caloriesvalue = null;
-    		  Double carbohydratevalue = null;
-    	      fibervalue = Double.valueOf(fiber.getText().trim());
-    	      proteinvalue = Double.valueOf(protein.getText().trim());
-    	      fatvalue = Double.valueOf(fat.getText().trim());
-    	      caloriesvalue = Double.valueOf(calories.getText().trim());
-    	      carbohydratevalue = Double.valueOf(carbohydrate.getText().trim());
-    	      
-    	      if (fibervalue < 0.0||proteinvalue<0.0||fatvalue<0.0||caloriesvalue<0.0||carbohydratevalue<0.0) {
-    	    	  	String message = "The input of the nutrient can not be negative, please try again!";
-    	    	  	Alert alert = new Alert(AlertType.INFORMATION, message);
-    	    	  	addFoodStage.close();
-    	        alert.showAndWait().filter(response -> response == ButtonType.OK);
-    	       }
-    	    } catch (Exception e) {
-    	      String message = "At least one nutrition value input is invalid, please type a number in nutrient textbox!";
-    	      Alert alert = new Alert(AlertType.INFORMATION, message);
-    	      addFoodStage.close();
-    	      alert.showAndWait().filter(response -> response == ButtonType.OK);
-    	    }
-    	  
-    	  
-    	  
-    	  
-    	  
-        String buffer = "";
-        buffer = buffer + "Name:";
-        buffer = buffer + name.getText();
-        buffer = buffer + ";  ";
-
-        buffer = buffer + "ID:";
-        buffer = buffer + id.getText();
-        buffer = buffer + ";  ";
-
-        buffer = buffer + "Fiber:";
-        buffer = buffer + fiber.getText();
-        buffer = buffer + ";  ";
-
-        buffer = buffer + "Protein:";
-        buffer = buffer + protein.getText();
-        buffer = buffer + ";  ";
-
-        buffer = buffer + "Fat:";
-        buffer = buffer + fat.getText();
-        buffer = buffer + ";  ";
-
-        buffer = buffer + "Calories:";
-        buffer = buffer + calories.getText();
-        buffer = buffer + ";  ";
-
-        buffer = buffer + "Carbohydrate:";
-        buffer = buffer + carbohydrate.getText();
-        buffer = buffer + ";  ";
-
-        System.out.println(buffer);
-
-        addFoodStage.close();
-        
-        
-      //  if (value < 0.0) {
-        //    String message = "The input of the nutrient can not be negative, please try again!";
-          //  Alert alert = new Alert(AlertType.INFORMATION, message);
-            //this.close();
-            //alert.showAndWait().filter(response -> response == ButtonType.OK);
-            //return false;
-
-      });
-
-
-      Button cancel = new Button("Cancel");
-      cancel.setOnAction(e2 -> {
-        addFoodStage.close();
-
-      });
-
-      AnchorPane.setTopAnchor(nameLabel, 30.0);
-      AnchorPane.setTopAnchor(name, 30.0);
-      AnchorPane.setTopAnchor(fiberLabel, 70.0);
-      AnchorPane.setTopAnchor(proteinLabel, 110.0);
-      AnchorPane.setTopAnchor(fatLabel, 150.0);
-      AnchorPane.setTopAnchor(caloriesLabel, 190.0);
-      AnchorPane.setTopAnchor(carbohydrateLabel, 230.0);
-      AnchorPane.setTopAnchor(fiber, 70.0);
-      AnchorPane.setTopAnchor(calories, 190.0);
-      AnchorPane.setTopAnchor(fat, 150.0);
-      AnchorPane.setTopAnchor(carbohydrate, 230.0);
-      AnchorPane.setTopAnchor(protein, 110.0);
-      AnchorPane.setTopAnchor(id, 270.0);
-      AnchorPane.setTopAnchor(idLabel, 270.0);
-      AnchorPane.setTopAnchor(confirm, 310.0);
-      AnchorPane.setTopAnchor(cancel, 310.0);
-
-      AnchorPane.setLeftAnchor(fiberLabel, 20.0);
-      AnchorPane.setLeftAnchor(proteinLabel, 20.0);
-      AnchorPane.setLeftAnchor(fatLabel, 20.0);
-      AnchorPane.setLeftAnchor(caloriesLabel, 20.0);
-      AnchorPane.setLeftAnchor(carbohydrateLabel, 20.0);
-      AnchorPane.setLeftAnchor(nameLabel, 20.0);
-      AnchorPane.setLeftAnchor(idLabel, 20.0);
-      AnchorPane.setLeftAnchor(name, 120.0);
-      AnchorPane.setLeftAnchor(fiber, 120.0);
-      AnchorPane.setLeftAnchor(calories, 120.0);
-      AnchorPane.setLeftAnchor(fat, 120.0);
-      AnchorPane.setLeftAnchor(id, 120.0);
-      AnchorPane.setLeftAnchor(carbohydrate, 120.0);
-      AnchorPane.setLeftAnchor(protein, 120.0);
-      AnchorPane.setLeftAnchor(confirm, 50.0);
-      AnchorPane.setLeftAnchor(cancel, 200.0);
-
-      addFoodPane.getChildren().addAll(fiberLabel, caloriesLabel, fatLabel, carbohydrateLabel,
-          proteinLabel, name, nameLabel, fiber, calories, fat, carbohydrate, protein, confirm,
-          cancel, id, idLabel);
-
-      Scene addFoodScene = new Scene(addFoodPane, 300, 350);
-      addFoodStage.setScene(addFoodScene);
-      addFoodStage.setTitle("Add Food");
-      addFoodStage.show();
-      addFoodStage.setResizable(false);
-
-    });
-    MenuItem clear = new MenuItem("Clear");
+    MenuItem add = new MenuItem("Add New Food");
     MenuItem apply = new MenuItem("Apply Selection");
     MenuItem undo = new MenuItem("undoAll Selection");
-    Menu operation = new Menu("Operation", null, add, clear, apply, undo);
+    Menu operation = new Menu("Operation", null, add, apply, undo);
     menuBar.getMenus().addAll(file, operation);
+    handleAddEvent(add);
     handleApplyButtonEvent(apply);
     handleUndoEvent(undo);
-    handleClearEvent(clear);
+
     handleSaveLoadEvent(save, load);
 
   }
 
+  private void handleAddEvent(MenuItem add) {
+    add.setOnAction(e1 -> {
+
+      AddFoodItemStage afis = new AddFoodItemStage(this, foodData);
+      afis.show();
+
+    });
+  }
+
+
+
   private void handleSaveLoadEvent(MenuItem save, MenuItem load) {
     // TODO Auto-generated method stub
     load.setOnAction(event -> {
+      handlePreloadEvent();
+      if (openLoad == false)
+        return;
       FileChooser loadChooser = new FileChooser();
       loadChooser.setTitle("Open Resource File");
       loadChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
@@ -308,8 +219,8 @@ public class FoodList extends VBox {
           return;
         // for the readable file, update the food list
         updateList(loadFile.getAbsolutePath());
-        String message = "Successfully load the file: " + loadFile.getAbsolutePath()
-            + "\nAnd successfully clear the unapplied selection items from the previous food list.";
+        foodquery.getWorkingFilter().setText("No Filter is currently working!");
+        String message = "Successfully load the file: " + loadFile.getAbsolutePath();
         Alert alert = new Alert(AlertType.INFORMATION, message);
         alert.showAndWait().filter(response -> response == ButtonType.OK);
       }
@@ -338,30 +249,27 @@ public class FoodList extends VBox {
   }
 
 
-  private void handleClearEvent(MenuItem clear) {
-    clear.setOnAction(event -> {
-      Alert alert =
-          new Alert(AlertType.CONFIRMATION, "Confirm to clear all items in the food list");
-      alert.showAndWait().filter(new Predicate<ButtonType>() {
-        @Override
-        public boolean test(ButtonType t) {
-          if (t.getButtonData().isCancelButton())
-            return true;
-          else {
-            foodData = new FoodData();
-            currentFoodItemList = new ArrayList<FoodItem>();
-            selectList = new ArrayList<FoodItem>();
-            currentFoodListView.getItems().clear();
-            currentFoodListView.refresh();
-            return false;
-          }
+  private boolean handlePreloadEvent() {
+    String message0 =
+        "Confirm to load a new File.\nAttention: All unapplied selected food items will be clear"
+            + " from the selected table.  All unsaved new added food items will be discarded";
+    Alert alert0 = new Alert(AlertType.CONFIRMATION, message0);
+    alert0.showAndWait().filter(new Predicate<ButtonType>() {
+      @Override
+      public boolean test(ButtonType t) {
+        if (t.getButtonData().isCancelButton()) {
+          openLoad = false;
+          return true;
+        } else {
+          openLoad = true;
+          return false;
         }
-      });
-
+      }
     });
-
-
+    return openLoad;
   }
+
+
 
   private void handleUndoEvent(MenuItem undo) {
     undo.setOnAction(event -> {
@@ -380,27 +288,6 @@ public class FoodList extends VBox {
     });
   }
 
-  public void resetSelectButton() {
-    selectList = new ArrayList<FoodItem>();
-    currentFoodListView.getItems().clear();
-    for (FoodItem fooditem : currentFoodItemList) {
-      FoodItemView current = new FoodItemView(fooditem);
-      Button select = new Button("select");
-      handleSelectButtonEvent(current, select, fooditem);
-      currentFoodListView.getItems().add(current);
-    }
-    currentFoodListView.refresh();
-  }
-
-  private void handleApplyButtonEvent(MenuItem apply) {
-    apply.setOnAction(event -> {
-      ApplySelectionStage appStage = new ApplySelectionStage(selectList,this,mealList);     
-      appStage.show();
-    });
-  }
-
-
-
 
 
   private void handleSelectButtonEvent(FoodItemView current, Button select, FoodItem fooditem) {
@@ -417,6 +304,37 @@ public class FoodList extends VBox {
         }
       }
     });
+  }
+
+  public void queryOnShown(List<FoodItem> queryFoodList) {
+    currentFoodListView.getItems().clear();
+    for (FoodItem fooditem : queryFoodList) {
+      FoodItemView current = new FoodItemView(fooditem);
+      Button select = new Button();
+      if (selectList.contains(fooditem))
+        select.setText("unselect");
+      else
+        select.setText("select");
+      handleSelectButtonEvent(current, select, fooditem);
+      currentFoodListView.getItems().add(current);
+    }
+    currentFoodListView.refresh();
+  }
+
+  public void noFilterOnShown() {
+    currentFoodListView.getItems().clear();
+    for (FoodItem fooditem : currentFoodItemList) {
+      FoodItemView current = new FoodItemView(fooditem);
+      Button select = new Button();
+      if (selectList.contains(fooditem))
+        select.setText("unselect");
+      else
+        select.setText("select");
+      handleSelectButtonEvent(current, select, fooditem);
+      currentFoodListView.getItems().add(current);
+    }
+    currentFoodListView.refresh();
+    foodquery.getWorkingFilter().setText("No Filter is currently working!");
   }
 
 

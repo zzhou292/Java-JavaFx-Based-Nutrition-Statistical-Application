@@ -465,11 +465,13 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
       while (current != null) {
         Iterator<K> kIt = current.keys.iterator();
         Iterator<V> vIt = current.values.iterator();
+        System.out.println(current.keys);
         int count = 0;
 
         while (kIt.hasNext()) {
           K keyc = kIt.next();
           V value = vIt.next();
+          
           int cmp1 = keyc.compareTo(key);
           if ((cmp1 <= 0 && comparator.equals("<=")) || (cmp1 == 0 && comparator.equals("=="))
               || (cmp1 >= 0 && comparator.equals(">="))) {

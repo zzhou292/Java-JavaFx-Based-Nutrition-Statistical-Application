@@ -3,15 +3,14 @@
  */
 package application;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -22,14 +21,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
@@ -47,7 +40,6 @@ public class MealList extends VBox {
   }
 
   private ListView<HBox> currentMealListView;
-  private FoodData foodData;
   private MenuBar menuBar;
   private Label label;
   private List<FoodItem> currentMealList;
@@ -65,7 +57,6 @@ public class MealList extends VBox {
   public MealList() {
     this.currentMealListView = new ListView<HBox>();
     currentMealList = new ArrayList<FoodItem>();
-    this.foodData = new FoodData();
     this.menuBar = new MenuBar();
     this.label = new Label("Meal List");
     this.count = new Label(String.valueOf(currentMealList.size()));
@@ -76,7 +67,7 @@ public class MealList extends VBox {
   }
 
   private void createCountLabels() {
-    Label countlb = new Label("Total meal Items count: ");
+    Label countlb = new Label("Total Meal Items count: ");
     countBox.getChildren().addAll(countlb, count);
   }
 
@@ -121,15 +112,8 @@ public class MealList extends VBox {
         fattotal = fattotal + fi.getNutrientValue("fat");
         caloriestotal = caloriestotal + fi.getNutrientValue("calories");
         carbohydratetotal = carbohydratetotal + fi.getNutrientValue("carbohydrate");
-        System.out.println(fi.getName() + fi.getNutrients());
+        
       }
-      System.out.println("------------");
-      System.out.println("Nutrition Summary:");
-      System.out.println("Fiber: " + fibertotal);
-      System.out.println("Protein: " + proteintotal);
-      System.out.println("Fat: " + fattotal);
-      System.out.println("Calories: " + caloriestotal);
-      System.out.println("Carbohydrate: " + carbohydratetotal);
 
       this.displaySummary(proteintotal, fibertotal, fattotal, caloriestotal, carbohydratetotal,
           count);
@@ -167,12 +151,32 @@ public class MealList extends VBox {
 
   public void addFoodItems(List<FoodItem> selectList) {
     for (FoodItem foodItem : selectList) {
-      FoodItemView current = new FoodItemView(foodItem);
       currentMealList.add(foodItem);
+    }
+    sortCurrentMealItemList();
+    currentMealListView.getItems().clear();
+    for (FoodItem foodItem : currentMealList) {
+      FoodItemView current = new FoodItemView(foodItem);
       currentMealListView.getItems().add(current);
       handleMealRemoveEvent(current, foodItem);
     }
+    currentMealListView.refresh();
   }
+
+  private void sortCurrentMealItemList() {
+    // sort this food item list by create a anonymous comparator class
+    Collections.sort(this.currentMealList, new Comparator<FoodItem>() {
+
+      @Override
+      public int compare(FoodItem o1, FoodItem o2) {
+        // invoke the compare to method of a string since name is a string
+        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+      }
+
+    });
+  }
+
+
 
   private void handleMealRemoveEvent(FoodItemView current, FoodItem foodItem) {
     Button remove = new Button("remove");

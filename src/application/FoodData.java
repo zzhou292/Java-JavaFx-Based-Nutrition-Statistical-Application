@@ -31,15 +31,21 @@ public class FoodData implements FoodDataADT<FoodItem> {
   public FoodData() {
     this.foodItemList = new ArrayList<FoodItem>();
     this.indexes = new HashMap<String, BPTree<Double, FoodItem>>();
+    /**
+     * uncomment after implement BPTree
+     */
+    // BPTree<Double, FoodItem> calories = new BPTree<>(3);
+    // BPTree<Double, FoodItem> fat = new BPTree<>(3);
+    // BPTree<Double, FoodItem> carbohydrate = new BPTree<>(3);
+    // BPTree<Double, FoodItem> fiber = new BPTree<>(3);
+    // BPTree<Double, FoodItem> protein = new BPTree<>(3);
+    // indexes.put("calories", calories);
+    // indexes.put("fat", fat);
+    // indexes.put("carbohydrate", carbohydrate);
+    // indexes.put("fiber", fiber);
+    // indexes.put("protein", protein);
   }
 
-  /**
-   * Public constructor
-   */
-  public FoodData(List<FoodItem> foodItemList) {
-    this.foodItemList = new ArrayList<FoodItem>();
-    this.indexes = new HashMap<String, BPTree<Double, FoodItem>>();
-  }
 
 
   /**
@@ -78,11 +84,23 @@ public class FoodData implements FoodDataADT<FoodItem> {
           foodItem.addNutrient(currentFood[i], Double.valueOf(currentFood[i + 1]));
         // add current item in the food list
         foodItemList.add(foodItem);
+
+        /**
+         * uncomment after implement BPTree
+         */
+        // HashMap<String, Double> nuTri= foodItem.getNutrients();
+        // indexes.get("calories").insert(nuTri.get("calories"), foodItem);
+        // indexes.get("fat").insert(nuTri.get("fat"), foodItem);
+        // indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
+        // indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
+        // indexes.get("protein").insert(nuTri.get("protein"), foodItem);
       }
       input.close();// close file
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
+
+
   }
 
   /**
@@ -108,6 +126,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     for (FoodItem foodItem : foodItemList) {
       if (foodItem.getName().toLowerCase().contains(substring.toLowerCase()))
         result.add(foodItem);
+
     }
     return result;
   }
@@ -119,9 +138,43 @@ public class FoodData implements FoodDataADT<FoodItem> {
    */
   @Override
   public List<FoodItem> filterByNutrients(List<String> rules) {
-    // TODO : Complete
+    /**
+     * uncomment after implement BPTree
+     */
+    // if (rules.size() == 1) {
+    // String[] firstRule = rules.get(0).split(" ");
+    // return indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
+    // }
+    //
+    // List<FoodItem> result = new ArrayList<FoodItem>();
+    // String[] firstRule = rules.get(0).split(" ");
+    // result = indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
+    // if (result.size() == 0)
+    // return result;
+    // for (int i = 1; i < rules.size(); i++) {
+    // String[] currentRule = rules.get(i).split(" ");
+    // List<FoodItem> currentList =
+    // indexes.get(currentRule[0]).rangeSearch(Double.valueOf(currentRule[2]), currentRule[1]);
+    // result = getIntersection(result, currentList);
+    // if (result.size() == 0)
+    // return result;
+    // }
+    //
+    // return result;
     return null;
   }
+
+//   private List<FoodItem> getIntersection(List<FoodItem> result, List<FoodItem> currentList) {
+//   List<FoodItem> interset = new ArrayList<FoodItem>();
+//   for (FoodItem fi : result) {
+//   if (currentList.contains(fi)) {
+//   interset.add(fi);
+//   }
+//   }
+//   return interset;
+//   }
+
+
 
   /**
    * Adds a food item to the loaded data.
@@ -131,6 +184,15 @@ public class FoodData implements FoodDataADT<FoodItem> {
   @Override
   public void addFoodItem(FoodItem foodItem) {
     this.foodItemList.add(foodItem);
+    /**
+     * uncomment after implement BPTree
+     */
+    // HashMap<String, Double> nuTri= foodItem.getNutrients();
+    // indexes.get("calories").insert(nuTri.get("calories"), foodItem);
+    // indexes.get("fat").insert(nuTri.get("fat"), foodItem);
+    // indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
+    // indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
+    // indexes.get("protein").insert(nuTri.get("protein"), foodItem);
   }
 
   /**
@@ -157,7 +219,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
       @Override
       public int compare(FoodItem o1, FoodItem o2) {
         // invoke the compare to method of a string since name is a string
-        return o1.getName().compareTo(o2.getName());
+        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
       }
 
     });

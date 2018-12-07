@@ -64,7 +64,7 @@ public class AddNutrientStage extends Stage {
 
     confirm.setOnAction(e1 -> {
       String buffer = "";
-      boolean valid = exceptionHandle();
+      boolean valid = checkInputValidity();
       if (valid == false)
         return;
       else {
@@ -81,7 +81,7 @@ public class AddNutrientStage extends Stage {
   }
 
 
-  private boolean exceptionHandle() {
+  private boolean checkInputValidity() {
     Double value = null;
     // exception handling
     if (comboBoxNutritions.getValue() == null || comboBoxSigns.getValue() == null
