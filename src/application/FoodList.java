@@ -9,10 +9,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -21,11 +19,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -50,6 +46,9 @@ public class FoodList extends VBox {
   private boolean openLoad;
   private Label count;
   private HBox countBox;
+  private Separator sp;
+  private Label onShownCount;
+  private HBox onShownBox;
 
   public FoodList(Stage primaryStage) {
     openLoad = false;
@@ -62,16 +61,26 @@ public class FoodList extends VBox {
     currentFoodItemList = new ArrayList<FoodItem>();
     this.label = new Label("Food Item List");
     this.count = new Label(String.valueOf(currentFoodItemList.size()));
+    onShownCount = new Label(String.valueOf(currentFoodItemList.size()));
+    sp = new Separator();
     this.primaryStage = primaryStage;
+    createOnshownLabels();
     createCountLabels();
     createMenubar();
-    boxAdjustment();
+    displayAdjustment();
 
+  }
+
+  private void createOnshownLabels() {
+    onShownBox = new HBox(5);
+    Label countlb = new Label("Total on shown Items count: ");
+    onShownBox.getChildren().addAll(countlb, onShownCount);
   }
 
   public void refreshAfterAdd() {
     currentFoodItemList = foodData.getAllFoodItems();
     count.setText(String.valueOf(currentFoodItemList.size()));
+    onShownCount.setText(String.valueOf(currentFoodItemList.size()));
     sortCurrentFoodItemList();
     currentFoodListView.getItems().clear();
     for (FoodItem fooditem : currentFoodItemList) {
@@ -98,6 +107,7 @@ public class FoodList extends VBox {
       currentFoodListView.getItems().add(current);
     }
     currentFoodListView.refresh();
+    onShownCount.setText(String.valueOf(currentFoodItemList.size()));
     foodquery.getWorkingFilter().setText("No Filter is currently working!");
   }
 
@@ -135,6 +145,7 @@ public class FoodList extends VBox {
     foodquery.updateFoodData(foodData);
     currentFoodItemList = foodData.getAllFoodItems();
     count.setText(String.valueOf(currentFoodItemList.size()));
+    onShownCount.setText(String.valueOf(currentFoodItemList.size()));
     sortCurrentFoodItemList();
     currentFoodListView.getItems().clear();
     selectList = new ArrayList<>();
@@ -162,9 +173,10 @@ public class FoodList extends VBox {
 
 
 
-  private void boxAdjustment() {
+  private void displayAdjustment() {
 
-    this.getChildren().addAll(this.label, this.menuBar, this.countBox, this.currentFoodListView);
+    this.getChildren().addAll(this.label, this.menuBar, this.countBox, this.sp, this.onShownBox,
+        this.currentFoodListView);
     VBox.setMargin(label, new Insets(0, 0, 0, 130));
     this.setPrefWidth(360.0);
     this.setStyle("-fx-background-color:#BFEFFF");
@@ -309,6 +321,7 @@ public class FoodList extends VBox {
   public void queryOnShown(List<FoodItem> queryFoodList) {
     currentFoodListView.getItems().clear();
     sortQueryFoodList(queryFoodList);
+    onShownCount.setText(String.valueOf(queryFoodList.size()));
     for (FoodItem fooditem : queryFoodList) {
       FoodItemView current = new FoodItemView(fooditem);
       Button select = new Button();
@@ -349,6 +362,7 @@ public class FoodList extends VBox {
       currentFoodListView.getItems().add(current);
     }
     currentFoodListView.refresh();
+    onShownCount.setText(String.valueOf(currentFoodItemList.size()));
     foodquery.getWorkingFilter().setText("No Filter is currently working!");
   }
 

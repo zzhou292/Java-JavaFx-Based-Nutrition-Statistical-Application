@@ -247,32 +247,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     }
   }
 
-  // use to debug
-  public void print() {
-    Collections.sort(this.foodItemList, new Comparator<FoodItem>() {
 
-      @Override
-      public int compare(FoodItem o1, FoodItem o2) {
-
-        return o1.getName().compareTo(o2.getName());
-      }
-
-    });
-    int count = 1;
-    for (FoodItem ft : this.foodItemList) {
-      System.out.print(count++ + ": ");
-      System.out.print(ft.getID() + ",");
-      System.out.print(ft.getName() + ",");
-      HashMap<String, Double> nu = ft.getNutrients();
-      for (String s : nu.keySet()) {
-        System.out.print(s + ",");
-        System.out.print(nu.get(s) + ",");
-      }
-      System.out.println();
-    }
-
-    System.out.println("end of file");
-  }
 
 
 }

@@ -130,6 +130,8 @@ public class AddNutrientStage extends Stage {
 
     remove.setOnAction(event -> {
       String message = "Confirm to remove nutrient Rule: " + buffer;
+      message += "Attention: the food list will not automatically return to"
+          + " the original food list. To do so please click on 'unDo All Filters' button";
       Alert alert = new Alert(AlertType.CONFIRMATION, message);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override

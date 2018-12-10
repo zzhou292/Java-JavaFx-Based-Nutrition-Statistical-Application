@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -19,12 +18,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 
 /**
@@ -76,7 +73,10 @@ public class FoodQuery extends VBox {
 
   private void handleNameRuleClear(Button clear) {
     clear.setOnAction(e1 -> {
-      Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm to clear this name rule");
+      String message = "Confirm to clear this name rule\n"
+          + "Attention: the food list will not automatically return to"
+          + " the original food list. To do so please click on 'unDo All Filters' button";
+      Alert alert = new Alert(AlertType.CONFIRMATION, message);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {
@@ -166,8 +166,8 @@ public class FoodQuery extends VBox {
         /**
          * uncomment after implement BPTree
          */
-         queryFoodList = foodData.filterByNutrients(rules);
-         foodList.queryOnShown(queryFoodList);
+        queryFoodList = foodData.filterByNutrients(rules);
+        foodList.queryOnShown(queryFoodList);
 
         workingFilter.setText("Nutrient filter now working!");
       }
@@ -214,7 +214,9 @@ public class FoodQuery extends VBox {
 
   private void handleClearEvent(MenuItem clear) {
     clear.setOnAction(e1 -> {
-      String message = "Confirm to clear all query rules!";
+      String message = "Confirm to clear all query rules!\n"
+          + "Attention: the food list will not automatically return to"
+          + " the original food list. To do so please click on 'unDo All Filters' button";
       Alert alert = new Alert(AlertType.CONFIRMATION, message);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
