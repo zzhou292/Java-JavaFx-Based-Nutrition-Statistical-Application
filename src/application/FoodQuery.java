@@ -1,5 +1,21 @@
 /**
+ * Filename: FoodQuery.java
  * 
+ * Project: team project P5
+ * 
+ * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
  */
 package application;
 
@@ -16,38 +32,42 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+
 
 
 /**
- * @author admin
+ * This is the food query class. This displays the food query rules. And it handles the operations
+ * to filter foods by the name rules and add new rules to this query. It also supports the operation
+ * to return to original food list and clear rules.
+ * 
+ * @author Meng, Zhou, Zou, Fan, Higgins
  *
  */
 public class FoodQuery extends VBox {
 
-  private ListView<HBox> queryRuleListView;
-  private List<String> rules;
+  private ListView<HBox> queryRuleListView;// list view of query rules
+  private List<String> rules;// stores query rules
+  // menu button and label
   private MenuBar menuBar;
   private Label label;
-  private FoodData foodData;// can get value from it, but do not change it !!
-  private List<FoodItem> queryFoodList;// do update it when appropriate
+  private FoodData foodData;// reference to the food data the stores food info
+  private List<FoodItem> queryFoodList;// filtered food list
+  // name rule boxes and fields
   private HBox nameRuleBox;
   private TextField nameRuleField;
-  private FoodList foodList;
-  private Label workingFilter;
-  private Separator sp;
+  private FoodList foodList;// reference to the food list
 
+  /**
+   * This represents the public constructor of the food query
+   * 
+   * @param foodList reference to the food list
+   */
   public FoodQuery(FoodList foodList) {
     this.label = new Label("FoodQuery Rules");
     this.foodList = foodList;
-    sp = new Separator();
-    this.workingFilter = new Label("No Filter is currently working!");
-    workingFilter.setFont(Font.font(null, FontWeight.BOLD, 25));
     nameRuleField = new TextField();
     this.rules = new ArrayList<String>();
     this.menuBar = new MenuBar();
@@ -61,8 +81,11 @@ public class FoodQuery extends VBox {
 
   }
 
-
+  /**
+   * This create the name rule HBox
+   */
   private void crateNameRuleBox() {
+    // set up the label and clear button
     Label nameRuleLabel = new Label("Name Rule: ");
     Button clear = new Button("clear");
     nameRuleField.setEditable(false);
@@ -70,50 +93,60 @@ public class FoodQuery extends VBox {
     handleNameRuleClear(clear);
   }
 
-
+  /**
+   * This handle the clear button event of name rule box
+   * 
+   * @param clear This represents the clear button
+   */
   private void handleNameRuleClear(Button clear) {
     clear.setOnAction(e1 -> {
-      String message = "Confirm to clear this name rule\n"
-          + "Attention: the food list will not automatically return to"
-          + " the original food list. To do so please click on 'unDo All Filters' button";
+      // display message to let user confirm to clear this name rule
+      String message = "Confirm to clear this name rule\n";
       Alert alert = new Alert(AlertType.CONFIRMATION, message);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {
           if (t.getButtonData().isCancelButton())
-            return true;
+            return true;// user choose to cancel, just return
           else {
+            // otherwise clear this name rule by setting its text to empty
             nameRuleField.setText("");
             return false;
           }
         }
       });
     });
-
   }
 
-
+  /**
+   * This adjusts the lay out of this food query box
+   */
   private void boxAdjustment() {
-
-    this.getChildren().addAll(this.label, this.menuBar, this.workingFilter, sp, this.nameRuleBox,
-        this.queryRuleListView);
-    VBox.setMargin(label, new Insets(0, 0, 0, 130));
+    // add all components to the box
+    this.getChildren().addAll(this.label, this.menuBar, this.nameRuleBox, this.queryRuleListView);
+    VBox.setMargin(label, new Insets(0, 0, 0, 130));// set label to the center
+    // set the width of the box and the back ground color
     this.setPrefWidth(400.0);
     this.setStyle("-fx-background-color:#BFEFFF");
-
   }
 
+  /**
+   * This creates the menu bar
+   */
   private void createMenubar() {
+    // crates menu items of all functional components
     MenuItem addNutrientRule = new MenuItem("Add Nutrient Rule");
     MenuItem setNameRule = new MenuItem("Set Name Rule");
     MenuItem clear = new MenuItem("Clear All Rules");
-    MenuItem filterByName = new MenuItem("Filter by Name");
-    MenuItem filterByNutrient = new MenuItem("Filter By Nutrient");
+    MenuItem filterByName = new MenuItem("Filter Only by Name");
+    MenuItem filterByNutrient = new MenuItem("Filter Only By Nutrient");
     MenuItem filterByAllRules = new MenuItem("Filter by All Rules");
-    MenuItem unDoFilters = new MenuItem("unDo All Filters");
+    MenuItem unDoFilters = new MenuItem("Return Original FoodList");
+    // add them to the operation menu and menu bar
     Menu operation = new Menu("Operation", null, addNutrientRule, setNameRule, filterByName,
         filterByNutrient, filterByAllRules, unDoFilters, clear);
     menuBar.getMenus().addAll(operation);
+    // handle the event of each components
     handleClearEvent(clear);
     handleAddRuleEvent(addNutrientRule, setNameRule);
     handleNameFilterEvent(filterByName);
@@ -122,31 +155,43 @@ public class FoodQuery extends VBox {
     handleApplyAllRuleEvent(filterByAllRules);
   }
 
+  /**
+   * Handle the filter by all rules event
+   * 
+   * @param filterByAllRules This represents filterByAllRules MenuItem
+   */
   private void handleApplyAllRuleEvent(MenuItem filterByAllRules) {
     filterByAllRules.setOnAction(rule -> {
+      // if there is either no name rule or nutrient rule
       if (rules.size() == 0 || nameRuleField.getText().equals("")) {
+        // display the warning message
         String message = "Please Add a Nutrient rule and set a name rule before apply it!";
         Alert alert = new Alert(AlertType.INFORMATION, message);
         alert.showAndWait().filter(response -> response == ButtonType.OK);
       } else {
-        /**
-         * uncomment after implement BPTree
-         */
+        // otherwise filter the food list by both name rule and nutrient rules
         List<FoodItem> NameFiltered = foodData.filterByName(nameRuleField.getText());
         List<FoodItem> NutriFiltered = foodData.filterByNutrients(rules);
+        // get the intersection of food lists applying both rules and refresh food list view
         List<FoodItem> interSection = getIntersection(NameFiltered, NutriFiltered);
         foodList.queryOnShown(interSection);
-        workingFilter.setText("Both filters are now working!");
       }
     });
 
   }
 
-
+  /**
+   * This returns the intersection of two lists
+   * 
+   * @param nameFiltered Food list of applying name rule
+   * @param nutriFiltered Food list of applying nutrient rules
+   * @return This returns the intersection of two list
+   */
   private List<FoodItem> getIntersection(List<FoodItem> nameFiltered,
       List<FoodItem> nutriFiltered) {
-    List<FoodItem> interset = new ArrayList<FoodItem>();
+    List<FoodItem> interset = new ArrayList<FoodItem>();// list to record the intersection
     for (FoodItem fi : nameFiltered) {
+      // if both lists contains the same food element, add it to the intersection list
       if (nutriFiltered.contains(fi)) {
         interset.add(fi);
       }
@@ -155,75 +200,96 @@ public class FoodQuery extends VBox {
   }
 
 
+  /**
+   * This handles the filterByNutrient event
+   * 
+   * @param filterByNutrient MenuItem of filterByNutrient)
+   */
   private void handleNutrientEvent(MenuItem filterByNutrient) {
     filterByNutrient.setOnAction(rule -> {
       if (rules.size() == 0) {
+        // if the nutrient rules is empty, display the warning message
         String message = "Please Add a Nutrient rule before apply it!";
         Alert alert = new Alert(AlertType.INFORMATION, message);
         alert.showAndWait().filter(response -> response == ButtonType.OK);
       } else {
-
-        /**
-         * uncomment after implement BPTree
-         */
+        // otherwise filter the food items by these rules and refresh food list view
         queryFoodList = foodData.filterByNutrients(rules);
         foodList.queryOnShown(queryFoodList);
-
-        workingFilter.setText("Nutrient filter now working!");
       }
     });
 
   }
 
 
+  /**
+   * This handles the unDoFilters event
+   * 
+   * @param unDoFilters the MenuItem of unDoFilters
+   */
   private void handleUndoEvent(MenuItem unDoFilters) {
-    // TODO Auto-generated method stub
     unDoFilters.setOnAction(rule -> {
+      // this returns the food list to original food list
       foodList.noFilterOnShown();
     });
   }
 
-
+  /**
+   * This handles the filter by name event
+   * 
+   * @param filterByName the MenuItem filterByName)
+   */
   private void handleNameFilterEvent(MenuItem filterByName) {
     filterByName.setOnAction(rule -> {
       if (nameRuleField.getText().equals("")) {
+        // if the name rule is empty, display warning message
         String message = "Please Set a name rule before apply it!";
         Alert alert = new Alert(AlertType.INFORMATION, message);
         alert.showAndWait().filter(response -> response == ButtonType.OK);
       } else {
+        // otherwise filter the food list by this name rule and refresh the list view
         queryFoodList = foodData.filterByName(nameRuleField.getText());
         foodList.queryOnShown(queryFoodList);
-        workingFilter.setText("Name Filter is now Working!");
       }
     });
 
   }
 
-
+  /**
+   * This handles the events to add new rules
+   * 
+   * @param addNutrientRule the MenuItem addNutrientRule
+   * @param setNameRule the MenuItem setNameRule
+   */
   private void handleAddRuleEvent(MenuItem addNutrientRule, MenuItem setNameRule) {
     addNutrientRule.setOnAction(rule -> {
+      // show the add nutrient rule window to process
       AddNutrientStage ans = new AddNutrientStage(queryRuleListView, rules);
       ans.show();
     });
     setNameRule.setOnAction(searchnames -> {
+      // show the add name rule window to process
       SetNameRuleStage setNameRuleStage = new SetNameRuleStage(nameRuleField);
       setNameRuleStage.show();
     });
   }
 
-
+  /**
+   * This handles the clear event
+   * 
+   * @param clear this represents the clear menu item
+   */
   private void handleClearEvent(MenuItem clear) {
     clear.setOnAction(e1 -> {
-      String message = "Confirm to clear all query rules!\n"
-          + "Attention: the food list will not automatically return to"
-          + " the original food list. To do so please click on 'unDo All Filters' button";
+      // display the confirm to clear rule message
+      String message = "Confirm to clear all query rules!\n";
       Alert alert = new Alert(AlertType.CONFIRMATION, message);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {
           if (t.getButtonData().isCancelButton())
-            return true;
-          else {
+            return true;// user choose to cancel, no performance and return
+          else {// otherwise clear all nutrient rules and the name rule
             queryRuleListView.getItems().clear();
             rules = new ArrayList<String>();
             nameRuleField.setText("");
@@ -234,21 +300,14 @@ public class FoodQuery extends VBox {
     });
   }
 
-
+  /**
+   * This updates the food Data of this food query
+   * 
+   * @param foodData This represents a food Data instance stores the food items info
+   */
   public void updateFoodData(FoodData foodData) {
     this.foodData = foodData;
   }
-
-
-  /**
-   * @return the workingFilter
-   */
-  public Label getWorkingFilter() {
-    return workingFilter;
-  }
-
-
-
 }
 
 

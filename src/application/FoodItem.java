@@ -1,3 +1,22 @@
+/**
+ * Filename: FoodItem.java
+ * 
+ * Project: team project P5
+ * 
+ * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
+ */
 package application;
 
 import java.util.ArrayList;
@@ -7,7 +26,7 @@ import java.util.List;
 /**
  * This class represents a food item with all its properties.
  * 
- * @author aka
+ * @author aka, Meng, Zhou, Zou, Fan, Higgins
  */
 @SuppressWarnings("unused")
 public class FoodItem {

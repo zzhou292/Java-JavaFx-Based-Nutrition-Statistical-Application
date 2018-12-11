@@ -1,3 +1,23 @@
+/**
+ * Filename: FoodDataADT.java
+ * 
+ * Project: team project P5
+ * 
+ * Authors: sapan (sapan@cs.wisc.edu)
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
+ */
+
 package application;
 import java.util.List;
 

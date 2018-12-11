@@ -1,5 +1,21 @@
 /**
+ * Filename: Main.java
  * 
+ * Project: team project P5
+ * 
+ * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
  */
 package application;
 
@@ -11,13 +27,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * @author admin
+ * Main class drives the whole GUI program
+ * 
+ * @author Meng, Zhou, Zou, Fan, Higgins
  *
  */
 public class Main extends Application {
 
   /**
-   * @param args
+   * Start the whole GUI program
+   * 
+   * @param args command line arguments
    */
   public static void main(String[] args) {
     launch(args);
@@ -35,7 +55,7 @@ public class Main extends Application {
 
     AnchorPane.setLeftAnchor(flp.getMealList(), 370.0);
     AnchorPane.setLeftAnchor(flp.getFoodquery(), 750.0);
-    Scene sc = new Scene(ap, 1110, 450);
+    Scene sc = new Scene(ap, 1110, 465);
     primaryStage.setTitle("HomePage");
     primaryStage.setScene(sc);
     primaryStage.sizeToScene();

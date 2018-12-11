@@ -1,3 +1,23 @@
+/**
+ * Filename: FoodData.java
+ * 
+ * Project: team project P5
+ * 
+ * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
+ */
+
 package application;
 
 import java.io.File;
@@ -13,7 +33,7 @@ import java.util.Scanner;
 /**
  * This class represents the backend for managing all the operations associated with FoodItems
  * 
- * @author sapan (sapan@cs.wisc.edu)
+ * @author sapan (sapan@cs.wisc.edu), Meng, Zhou, Zou, Fan, Higgins
  */
 public class FoodData implements FoodDataADT<FoodItem> {
 
@@ -21,7 +41,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
   private List<FoodItem> foodItemList;
 
   // Map of nutrients and their corresponding index
-  @SuppressWarnings("unused")
   private HashMap<String, BPTree<Double, FoodItem>> indexes;
 
 
@@ -31,14 +50,13 @@ public class FoodData implements FoodDataADT<FoodItem> {
   public FoodData() {
     this.foodItemList = new ArrayList<FoodItem>();
     this.indexes = new HashMap<String, BPTree<Double, FoodItem>>();
-    /**
-     * uncomment after implement BPTree
-     */
+    // create BP trees for each nutrients
     BPTree<Double, FoodItem> calories = new BPTree<>(3);
     BPTree<Double, FoodItem> fat = new BPTree<>(3);
     BPTree<Double, FoodItem> carbohydrate = new BPTree<>(3);
     BPTree<Double, FoodItem> fiber = new BPTree<>(3);
     BPTree<Double, FoodItem> protein = new BPTree<>(3);
+    // push nutrient BP Tress into the indexes hash table
     indexes.put("calories", calories);
     indexes.put("fat", fat);
     indexes.put("carbohydrate", carbohydrate);
@@ -84,10 +102,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
           foodItem.addNutrient(currentFood[i], Double.valueOf(currentFood[i + 1]));
         // add current item in the food list
         foodItemList.add(foodItem);
-
-        /**
-         * uncomment after implement BPTree
-         */
+        // insert this food item into all of its nutrient trees
         HashMap<String, Double> nuTri = foodItem.getNutrients();
         indexes.get("calories").insert(nuTri.get("calories"), foodItem);
         indexes.get("fat").insert(nuTri.get("fat"), foodItem);
@@ -124,6 +139,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     // for each item in this.fooditemlist
     // exams if its name contains this substring add it to the list
     for (FoodItem foodItem : foodItemList) {
+      // to lower case and then compare to make it case in-sensitive
       if (foodItem.getName().toLowerCase().contains(substring.toLowerCase()))
         result.add(foodItem);
 
@@ -131,49 +147,75 @@ public class FoodData implements FoodDataADT<FoodItem> {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Gets all the food items that fulfill ALL the provided rules
+   *
+   * Format of a rule: "<nutrient> <comparator> <value>"
    * 
-   * @see skeleton.FoodDataADT#filterByNutrients(java.util.List)
+   * Definition of a rule: A rule is a string which has three parts separated by a space: 1.
+   * <nutrient>: Name of one of the 5 nutrients [CASE-INSENSITIVE] 2. <comparator>: One of the
+   * following comparison operators: <=, >=, == 3. <value>: a double value
+   * 
+   * Note: 1. Multiple rules can contain the same nutrient. E.g. ["calories >= 50.0", "calories <=
+   * 200.0", "fiber == 2.5"] 2. A FoodItemADT object MUST satisfy ALL the provided rules i to be
+   * returned in the filtered list.
+   *
+   * @param rules list of rules
+   * @return list of filtered food items; if no food item matched, return empty list
    */
   @Override
   public List<FoodItem> filterByNutrients(List<String> rules) {
-    /**
-     * uncomment after implement BPTree
-     */
+    // if the rules is null or contains no rules, just return this foodItemList
+    if (rules == null)
+      return foodItemList;
+    if (rules.size() == 0)
+      return foodItemList;
+    // if rules contains only one rule, apply it by performing a single range search
     if (rules.size() == 1) {
       String[] firstRule = rules.get(0).split(" ");
       return indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
     }
-
+    // have more than two rules
+    // performing the first rule by range search
     List<FoodItem> result = new ArrayList<FoodItem>();
     String[] firstRule = rules.get(0).split(" ");
     result = indexes.get(firstRule[0]).rangeSearch(Double.valueOf(firstRule[2]), firstRule[1]);
     if (result.size() == 0)
-      return result;
+      return result;// it the first rule gives empty list, return it directly
+    // otherwise get the intersection of each rules
     for (int i = 1; i < rules.size(); i++) {
+      // get the ith rule
       String[] currentRule = rules.get(i).split(" ");
+      // get the intersection of this ith rule and its previous rule as the result
       List<FoodItem> currentList =
           indexes.get(currentRule[0]).rangeSearch(Double.valueOf(currentRule[2]), currentRule[1]);
       result = getIntersection(result, currentList);
       if (result.size() == 0)
-        return result;
+        return result;// intersection gives a empty list, return directly
     }
-
-    return result;
+    return result; // return the intersection of all rules
 
   }
 
+  /**
+   * This returns the intersection of two lists
+   * 
+   * @param result the result of the list
+   * @param currentList a current read list to be intersected
+   * @return This returns the intersection of two list
+   */
   private List<FoodItem> getIntersection(List<FoodItem> result, List<FoodItem> currentList) {
-    List<FoodItem> interset = new ArrayList<FoodItem>();
+    List<FoodItem> interset = new ArrayList<FoodItem>();// list to record the intersection
+    // iterate through all food items in the result list
     for (FoodItem fi : result) {
       if (currentList.contains(fi)) {
+        // if both lists contains the same food element, add it to the intersection list
         interset.add(fi);
       }
     }
     return interset;
   }
-  
+
 
 
   /**
@@ -184,15 +226,13 @@ public class FoodData implements FoodDataADT<FoodItem> {
   @Override
   public void addFoodItem(FoodItem foodItem) {
     this.foodItemList.add(foodItem);
-    /**
-     * uncomment after implement BPTree
-     */
-     HashMap<String, Double> nuTri= foodItem.getNutrients();
-     indexes.get("calories").insert(nuTri.get("calories"), foodItem);
-     indexes.get("fat").insert(nuTri.get("fat"), foodItem);
-     indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
-     indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
-     indexes.get("protein").insert(nuTri.get("protein"), foodItem);
+    // add the food item to all of its nutrient BP trees
+    HashMap<String, Double> nuTri = foodItem.getNutrients();
+    indexes.get("calories").insert(nuTri.get("calories"), foodItem);
+    indexes.get("fat").insert(nuTri.get("fat"), foodItem);
+    indexes.get("carbohydrate").insert(nuTri.get("carbohydrate"), foodItem);
+    indexes.get("fiber").insert(nuTri.get("fiber"), foodItem);
+    indexes.get("protein").insert(nuTri.get("protein"), foodItem);
   }
 
   /**
@@ -246,7 +286,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
       e.printStackTrace();
     }
   }
-
 
 
 

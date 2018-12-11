@@ -48,7 +48,6 @@ public class SetNameRuleStage extends Stage {
       String searchinput = textField.getText().trim();
       // get Text
       if (searchinput.equals("") == false) {
-
         nameRuleField.setText(searchinput);
         this.close();
       } else {
