@@ -121,3 +121,5 @@ TODO: Fix bug found with rangeSearch((Double), "<="). Implement BPTree into the 
 Dec 20 -- Kejia Fan, James Higgins, Yulu Zhou, Zhikang Meng, Jason Zhou
 1.Bugs fixed
 2.The program has been completely tested
+
+ATTENTION: Please click load and select "Foodlist.csv" to load food data
