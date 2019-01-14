@@ -1,7 +1,6 @@
 # p5
 Development Log:
 @Jason Zhou All Rights Reserved
-Collaborators Are Not Allowed To Copy From This Document.
 ------------------------------------------
 
 Nov 27 - Zhikang Meng
@@ -119,4 +118,6 @@ Dec 4 -- Kejia Fan, James Higgins, Yulu Zhou
 TODO: Fix bug found with rangeSearch((Double), "<="). Implement BPTree into the main program.
 
 ------------------------------------------
-TO BE UPDATED
+Dec 20 -- Kejia Fan, James Higgins, Yulu Zhou, Zhikang Meng, Jason Zhou
+1.Bugs fixed
+2.The program has been completely tested
