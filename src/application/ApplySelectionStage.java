@@ -1,5 +1,21 @@
 /**
+ * Filename: ApplySelectionStage.java
  * 
+ * Project: team project P5
+ * 
+ * Authors: Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU Zou
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
  */
 package application;
 
@@ -19,6 +35,8 @@ import javafx.stage.Stage;
 /**
  * This stage provides a window for the user to confirm their selections the selections of the food
  * will be copied from the foodlist to the meallist
+ * 
+ * @author Meng, Zhou, Zou, Fan, Higgins
  */
 public class ApplySelectionStage extends Stage {
 

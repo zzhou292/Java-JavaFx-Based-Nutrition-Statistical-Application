@@ -1,3 +1,23 @@
+/**
+ * Filename: AddNutrientStage.java
+ * 
+ * Project: team project P5
+ * 
+ * Authors: Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU Zou
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
+ */
+
 package application;
 
 import java.util.List;
@@ -14,11 +34,14 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
  * This stage provides a window for the user to add a nutrition rule
+ * 
+ * @author Meng, Zhou, Zou, Fan, Higgins
  */
 public class AddNutrientStage extends Stage {
   // pane and scene control layout
@@ -61,7 +84,7 @@ public class AddNutrientStage extends Stage {
     // create two buttons
     Button confirm = new Button("Add Rule");
     Button cancel = new Button("Cancel");
-    Label nulabel = new Label("Nutrient                        comparator     value");
+    Label nulabel = new Label("Nutrient                     comparator     value");
     // add all elements to the pane
     anchorPane.getChildren().addAll(nulabel, comboBoxNutritions, comboBoxSigns, input, confirm,
         cancel);
@@ -113,6 +136,7 @@ public class AddNutrientStage extends Stage {
         || input.getText().equals("")) {
       String message = "Make sure to choose all component and enter the value, please try again!";
       Alert alert = new Alert(AlertType.INFORMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       this.close();
       alert.showAndWait().filter(response -> response == ButtonType.OK);
       return false;
@@ -127,6 +151,7 @@ public class AddNutrientStage extends Stage {
       String message = "The format of your value input is incorrect, please try again!";
       // display an alert button to the user
       Alert alert = new Alert(AlertType.INFORMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       this.close();// close the addnutrient stage
       // wait for the response of the ok button
       alert.showAndWait().filter(response -> response == ButtonType.OK);
@@ -139,6 +164,7 @@ public class AddNutrientStage extends Stage {
       String message = "The input of the nutrient can not be negative, please try again!";
       // display an alert window to the user and close the stage
       Alert alert = new Alert(AlertType.INFORMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       this.close();
       alert.showAndWait().filter(response -> response == ButtonType.OK);
       return false;
@@ -170,6 +196,7 @@ public class AddNutrientStage extends Stage {
       // an alert window will be displayed
       String message = "Confirm to remove this nutrient Rule: " + buffer;
       Alert alert = new Alert(AlertType.CONFIRMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {

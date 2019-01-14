@@ -3,7 +3,7 @@
  * 
  * Project: team project P5
  * 
- * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ * Authors: Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
  *
  * Semester: Fall 2018
  * 
@@ -38,6 +38,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -141,6 +142,7 @@ public class MealList extends VBox {
       // display the confirm info to ask user to confirm cancel
       Alert alert =
           new Alert(AlertType.CONFIRMATION, "Confirm to clear all items in the meal list");
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       alert.showAndWait().filter(new Predicate<ButtonType>() {
         @Override
         public boolean test(ButtonType t) {
@@ -229,6 +231,7 @@ public class MealList extends VBox {
         // display the info to user to confirm removal
         String message = "Confirm to remove item: " + foodItem.getName();
         Alert alert = new Alert(AlertType.CONFIRMATION, message);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().filter(new Predicate<ButtonType>() {
           @Override
           public boolean test(ButtonType t) {

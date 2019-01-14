@@ -1,3 +1,23 @@
+/**
+ * Filename: AddFoodItemStage.java
+ * 
+ * Project: team project P5
+ * 
+ * Authors: Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU Zou
+ *
+ * Semester: Fall 2018
+ * 
+ * Course: CS400
+ * 
+ * Lecture: 002
+ * 
+ * Due Date: Before 10pm on December 12, 2018 Version: 1.0
+ * 
+ * Credits: NONE
+ * 
+ * Bugs: no known bugs
+ */
+
 package application;
 
 import javafx.scene.Scene;
@@ -8,11 +28,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
  * This stage provides a window for the user to add information for a new food
+ * 
+ * @author Meng, Zhou, Zou, Fan, Higgins
  */
 public class AddFoodItemStage extends Stage {
 
@@ -169,9 +192,10 @@ public class AddFoodItemStage extends Stage {
     if (name.getText().equals("") || id.getText().equals("") || fiber.getText().equals("")
         || protein.getText().equals("") || fat.getText().equals("") || calories.getText().equals("")
         || carbohydrate.getText().equals("")) {
-      String message = "Make sure to choose all component and enter the value, please try again!";
+      String message = "Make sure enter the value of all nutrient components, please try again!";
       // display the warning windows with the assigned warning message
       Alert alert = new Alert(AlertType.INFORMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       this.close();// close the add food stage
       alert.showAndWait().filter(response -> response == ButtonType.OK);
       return false;
@@ -195,6 +219,7 @@ public class AddFoodItemStage extends Stage {
           || carbohydratevalue < 0.0) {
         String message = "The input of the nutrient can not be negative, please try again!";
         Alert alert = new Alert(AlertType.INFORMATION, message);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         this.close();
         alert.showAndWait().filter(response -> response == ButtonType.OK);
         return false;
@@ -206,6 +231,7 @@ public class AddFoodItemStage extends Stage {
           "At least one nutrition value input is invalid, please type a number in nutrient textbox!";
       // display the warning windows with the assigned warning message
       Alert alert = new Alert(AlertType.INFORMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       this.close(); // close the addfood stage
       // wait for response from ok button
       alert.showAndWait().filter(response -> response == ButtonType.OK);

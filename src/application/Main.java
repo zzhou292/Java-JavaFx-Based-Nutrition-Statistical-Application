@@ -3,7 +3,7 @@
  * 
  * Project: team project P5
  * 
- * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ * Authors: Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
  *
  * Semester: Fall 2018
  * 
@@ -30,7 +30,6 @@ import javafx.stage.Stage;
  * Main class drives the whole GUI program
  * 
  * @author Meng, Zhou, Zou, Fan, Higgins
- *
  */
 public class Main extends Application {
 
@@ -45,25 +44,19 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    AnchorPane ap = new AnchorPane();
-    FoodList flp = new FoodList(primaryStage);
-
-
+    AnchorPane ap = new AnchorPane();// anchorPane to control the primary stage
+    FoodList flp = new FoodList(primaryStage);// create the food list
+    // add the meal list and food query list to this pane
     ap.getChildren().addAll(flp, flp.getMealList(), flp.getFoodquery());
-
-
-
+    // set their layout positions
     AnchorPane.setLeftAnchor(flp.getMealList(), 370.0);
     AnchorPane.setLeftAnchor(flp.getFoodquery(), 750.0);
-    Scene sc = new Scene(ap, 1110, 465);
+    Scene sc = new Scene(ap, 1110, 480);// initialize the main scene
+    // set the properties of the primary stage
     primaryStage.setTitle("HomePage");
     primaryStage.setScene(sc);
     primaryStage.sizeToScene();
     primaryStage.show();
     primaryStage.setResizable(false);
-
-
-
   }
-
 }

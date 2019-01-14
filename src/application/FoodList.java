@@ -3,7 +3,7 @@
  * 
  * Project: team project P5
  * 
- * Authors: Debra Deppeler, Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
+ * Authors: Zhikang Meng, Jason ZHOU, Kejia Fan, James Higgins,YULU ZOU
  *
  * Semester: Fall 2018
  * 
@@ -39,6 +39,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -213,6 +214,14 @@ public class FoodList extends VBox {
    */
   private void handleApplyButtonEvent(MenuItem apply) {
     apply.setOnAction(event -> {
+      // sort the selected list
+      Collections.sort(selectList, new Comparator<FoodItem>() {
+        @Override
+        public int compare(FoodItem o1, FoodItem o2) {
+          // invoke the compare to method of a string since name is a string and case insensitive
+          return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+        }
+      });
       // open a apply selection window
       ApplySelectionStage appStage = new ApplySelectionStage(selectList, this, mealList);
       appStage.show();
@@ -230,6 +239,7 @@ public class FoodList extends VBox {
       String message = "Tip: Can't view the full name of a food Item?"
           + " Hover your mouse over it for few seconds and it will show up.";
       Alert alert = new Alert(AlertType.INFORMATION, message);
+      alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
       alert.showAndWait().filter(response -> response == ButtonType.OK);
     });
 
@@ -279,6 +289,7 @@ public class FoodList extends VBox {
           // file can not read, display warning message to user and return
           String message0 = "Fail to load the file: " + loadFile.getAbsolutePath();
           Alert alert0 = new Alert(AlertType.INFORMATION, message0);
+          alert0.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
           alert0.showAndWait().filter(response -> response == ButtonType.OK);
           return;
         }
@@ -288,6 +299,7 @@ public class FoodList extends VBox {
         // display the successful load info to user
         String message = "Successfully load the file: " + loadFile.getAbsolutePath();
         Alert alert = new Alert(AlertType.INFORMATION, message);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().filter(response -> response == ButtonType.OK);
       }
     });
@@ -310,6 +322,7 @@ public class FoodList extends VBox {
           String message2 =
               "Fail to save the current food list to the file: " + saveFile.getAbsolutePath();
           Alert alert2 = new Alert(AlertType.INFORMATION, message2);
+          alert2.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
           alert2.showAndWait().filter(response -> response == ButtonType.OK);
           return;
         }
@@ -319,6 +332,7 @@ public class FoodList extends VBox {
         String message =
             "Successfully save the current food list to the file: " + saveFile.getAbsolutePath();
         Alert alert = new Alert(AlertType.INFORMATION, message);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().filter(response -> response == ButtonType.OK);
       }
     });
@@ -335,6 +349,7 @@ public class FoodList extends VBox {
         "Confirm to load a new File.\nAttention: All unapplied selected food items will be clear"
             + " from the selected table.  All unsaved new added food items will be discarded";
     Alert alert0 = new Alert(AlertType.CONFIRMATION, message0);
+    alert0.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
     alert0.showAndWait().filter(new Predicate<ButtonType>() {
       @Override
       public boolean test(ButtonType t) {
